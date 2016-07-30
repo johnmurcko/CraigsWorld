@@ -33,16 +33,20 @@ int main()
 
     gameInit();
 
+    sf::Clock delta_clock;
+
     //game loop
-	while (window.isOpen()) {
-        gameUpdate();
-        draw(&window);
+	while (window.isOpen ()) {
+        gameUpdate ();
+        draw (&window);
 		sf::Event event;
 
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
+
+		sf::Time delta_time = delta_clock.restart ();
 	}
 
 	dealloc();
@@ -87,10 +91,10 @@ void draw (sf::RenderWindow * window) {
 	window->display();
 }
 
-void keyboardListener () {
+void keyboardListener (sf::Time delta_time) {
 	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Left)) {
 		if (player->getX () >= 0 + kPlayerBorderLimit) {
-			player->setX(player->getX () - 1);
+			player->move (-1 * player->getSpeed() * delta_time);
 		}
 		else {
 			origin->setX (origin->getX () + 1);
