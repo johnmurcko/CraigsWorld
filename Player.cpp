@@ -1,30 +1,21 @@
 #include "Player.hpp"
+#include "Constants.hpp"
 
 Player::Player (float x, float y, Origin * origin) {
 	this->origin = origin;
 	setX (x);
 	setY (y);
+	speed = kDefaultSpeed;
 }
 
-float Player::getX () {
-	return x;
+
+void Player::setSpeed (float speed) {
+	this->speed = speed;
 }
 
-float Player::getY () {
-	return y;
-}
 
-void Player::setX (float x) {
-	this->x = x;
-}
-
-void Player::setY (float y) {
-	this->y = y;
-}
-
-void Player::move (float x_delta, float y_delta) {
-    setX (getX () + x_delta);
-    setY (getY () + y_delta);
+float Player::getSpeed () {
+	return speed;
 }
 
 void Player::draw (sf::RenderWindow * window) {

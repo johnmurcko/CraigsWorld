@@ -1,19 +1,22 @@
-#ifndef ORIGIN_H
-#define ORIGIN_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
-class Origin {
-	private:
+#include "Origin.hpp"
+
+class Entity {
+	protected:
 		float x;
 		float y;
-		float speed;
+		float last_origin_x;
+		float last_origin_y;
+		Origin * origin;
 	public:
-		Origin (float x, float y);
 		void setX (float x);
 		void setY (float y);
 		float getX ();
 		float getY ();
 		void move (float x_delta, float y_delta);
-		float getSpeed();
+		void update ();
 };
 
 #endif

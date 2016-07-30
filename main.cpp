@@ -16,9 +16,9 @@ const int kRockCount = 1000;
 const float kPlayerBorderLimit = 10;
 
 void gameInit();
-void gameUpdate();
+void gameUpdate(sf::Time delta_time);
 void draw(sf::RenderWindow * window);
-void keyboardListener();
+void keyboardListener(sf::Time delta_time);
 void createRocks();
 void dealloc();
 
@@ -34,10 +34,11 @@ int main()
     gameInit();
 
     sf::Clock delta_clock;
+	sf::Time delta_time;
 
     //game loop
 	while (window.isOpen ()) {
-        gameUpdate ();
+        gameUpdate (delta_time);
         draw (&window);
 		sf::Event event;
 
@@ -46,7 +47,7 @@ int main()
 				window.close();
 		}
 
-		sf::Time delta_time = delta_clock.restart ();
+		delta_time = delta_clock.restart ();
 	}
 
 	dealloc();
@@ -71,9 +72,9 @@ void createRocks () {
 	}
 }
 
-void gameUpdate () {
-    keyboardListener();
-    origin_rock->update();
+void gameUpdate (sf::Time delta_time) {
+    keyboardListener (delta_time);
+    origin_rock->update ();
 	for (int i = 0; i < kRockCount; i++) {
 		rock[i]->update ();
 	}
@@ -92,36 +93,38 @@ void draw (sf::RenderWindow * window) {
 }
 
 void keyboardListener (sf::Time delta_time) {
+
+	// movement keys
 	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Left)) {
 		if (player->getX () >= 0 + kPlayerBorderLimit) {
-			player->move (-1 * player->getSpeed() * delta_time);
+			player->move (-1 * player->getSpeed() * delta_time.asSeconds (), 0);
 		}
 		else {
-			origin->setX (origin->getX () + 1);
+			origin->move (1 * player->getSpeed() * delta_time.asSeconds (), 0);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Right)) {
 		if (player->getX () <= kWindowWidth - kPlayerBorderLimit) {
-			player->setX(player->getX () + 1);
+			player->move (1 * player->getSpeed() * delta_time.asSeconds (), 0);
 		}
 		else {
-			origin->setX (origin->getX () - 1);
+			origin->move (-1 * player->getSpeed() * delta_time.asSeconds (), 0);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Up)) {
 		if (player->getY () >= 0 + kPlayerBorderLimit) {
-			player->setY(player->getY () - 1);
+			player->move (0, -1 * player->getSpeed() * delta_time.asSeconds ());
 		}
 		else {
-			origin->setY (origin->getY () + 1);
+			origin->move (0, 1 * player->getSpeed() * delta_time.asSeconds ());
 		}
 	}
 	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Down)) {
 		if (player->getY () <= kWindowHeight - kPlayerBorderLimit) {
-			player->setY(player->getY () + 1);
+			player->move (0, 1 * player->getSpeed() * delta_time.asSeconds ());
 		}
 		else {
-			origin->setY (origin->getY () - 1);
+			origin->move (0, -1 * player->getSpeed() * delta_time.asSeconds ());
 		}
 	}
 }

@@ -1,13 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 
-class Player : public Entity {
+class Enemy : public Entity {
 	private:
 		float speed;
 	public:
-		Player (float x, float y, Origin * origin);
-		float getSpeed ();
+		Enemy (float x, float y, Origin * origin);
 		void setSpeed (float speed);
+		float getSpeed ();
+		void generateWanderTarget ();
 		void draw (sf::RenderWindow * window);
 };
-
