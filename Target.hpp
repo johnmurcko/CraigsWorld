@@ -1,6 +1,6 @@
-#include "Origin.hpp"
+#include "Entity.hpp"
 
-class Target : Entity {
+class Target : public Entity {
 	private:
 		int width;
 		int height;
@@ -10,5 +10,5 @@ class Target : Entity {
 		void setHeight (int height);
 		int getWidth ();
 		int getHeight ();
-		bool isIntersecting ();
+		bool isIntersecting (Entity * entity);
 }

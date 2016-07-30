@@ -8,12 +8,28 @@ void Entity::setY (float y) {
 	this->y = y;
 }
 
+void Entity::setWidth (int width) {
+	this->width = width;
+}
+
+void Entity::setHeight (int height) {
+	this->height = height;
+}
+
 float Entity::getX () {
 	return x;
 }
 
 float Entity::getY () {
 	return y;
+}
+
+int Entity::getWidth () {
+	return width;
+}
+
+int Entity::getHeight () {
+	return height;
 }
 
 void Entity::move (float x_delta, float y_delta) {

@@ -8,35 +8,14 @@ Target::Target (float x, float y, int width, int height, Origin * origin) {
 	this->origin = origin;
 }
 
-void Target::setX (float x) {
-	this->x = x;
-}
+bool isIntersecting (Entity * entity) {
+	if (entity->getX () >= getX ()
+		|| entity->getX () + entity->getWidth() <= getX () + getWidth ()
+		|| entity->getY () >= getY ()
+		|| entity->getY () <= getY () + getHeight ()) {
 
-void Target::setY (float y) {
-	this->y = y;
-}
+		return true;
+	}
 
-void Target::setWidth (int width) {
-	this->width = width;
+	return false;
 }
-
-void Target::setHeight (int height) {
-	this->height = height;
-}
-
-float Target::getX () {
-	return x;
-}
-
-float Target::getY () {
-	return y;
-}
-
-int Target::getWidth () {
-	return width;
-}
-
-int Target::getHeight () {
-	return height;
-}
-
