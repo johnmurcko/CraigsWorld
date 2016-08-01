@@ -79,17 +79,21 @@ void Player::forwardThrust(sf::Time * delta_time) {
 
     setLastThrustAngle(getAngle()+90);
 
-    setXVelocity( getXVelocity() + cos(getLastThrustAngle()*kDegreesToRadians) * delta_time->asSeconds() * getSpeed());
-    setYVelocity( getYVelocity() + sin(getLastThrustAngle()*kDegreesToRadians) * delta_time->asSeconds()* getSpeed());
+    setXVelocity( getXVelocity() + cos(getLastThrustAngle()*kDegreesToRadians)
+        * getSpeed() * delta_time->asSeconds());
+    setYVelocity( getYVelocity() + sin(getLastThrustAngle()*kDegreesToRadians)
+        * getSpeed() * delta_time->asSeconds());
 
-	origin->move(getXVelocity(), getYVelocity());std::cout << getAngle() << '\n';
+	origin->move(getXVelocity(), getYVelocity());
 }
 
 void Player::reverseThrust(sf::Time * delta_time) {
     setLastThrustAngle(getAngle() + 90+180);
 
-	setXVelocity( getXVelocity() + cos(getLastThrustAngle()*kDegreesToRadians) * getSpeed() * delta_time->asSeconds());
-    setYVelocity( getYVelocity() + sin(getLastThrustAngle()*kDegreesToRadians) * getSpeed() * delta_time->asSeconds());
+	setXVelocity( getXVelocity() + cos(getLastThrustAngle()*kDegreesToRadians)
+        * getSpeed() * delta_time->asSeconds());
+    setYVelocity( getYVelocity() + sin(getLastThrustAngle()*kDegreesToRadians)
+        * getSpeed() * delta_time->asSeconds());
 
 	origin->move(getXVelocity(), getYVelocity());
 }
@@ -106,7 +110,6 @@ void Player::update(sf::Time *delta_time) {
 
 void Player::rotateLeft(sf::Time * delta_time) {
 	setAngle(getAngle() + 450 * delta_time->asSeconds());
-	std::cout << getAngle() << '\n';
 }
 
 void Player::rotateRight(sf::Time * delta_time) {
@@ -121,8 +124,6 @@ void Player::draw(sf::RenderWindow * window) {
     player_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
     player_sprite.setPosition(getX(), getY());
     player_sprite.setRotation(getAngle());
-
-
 
 	window->draw(player_sprite);
 }

@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Star.hpp"
 #include "Enemy.hpp"
+#include "Bullet.hpp"
 
 const int kStarCount = 1000;
 const int kInitialEnemyCount = 1000;
@@ -14,9 +15,9 @@ const int kInitialEnemyCount = 1000;
 int enemy_count;
 
 void gameInit();
-void gameUpdate(sf::Time * delta_time);
+void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time);
 void draw(sf::RenderWindow * window);
-void keyboardListener(sf::Time * delta_time);
+void keyboardListener(sf::RenderWindow * window, sf::Time * delta_time);
 void createStars();
 void createEnemies();
 void dealloc();
@@ -26,6 +27,7 @@ Player * player;
 Origin * origin;
 Star ** star;
 Enemy ** enemy;
+std::vector<Bullet*> bullet;
 
 int main()
 {
@@ -41,7 +43,7 @@ int main()
 
     //game loop
 	while (window.isOpen()) {
-        gameUpdate(&delta_time);
+        gameUpdate(&window, &delta_time);
         draw(&window);
 		sf::Event event;
 
@@ -84,17 +86,21 @@ void createEnemies() {
 	}
 }
 
-void gameUpdate(sf::Time * delta_time) {
-    keyboardListener(delta_time);
+void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
+    keyboardListener(window, delta_time);
 
 	for (int i = 0; i < kStarCount; i++) {
 		star[i]->update();
 	}
 
+	for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->update(delta_time);
+	}
+
 	for (int i = 0; i < kInitialEnemyCount; i++) {
-        //std::cout << "enemy" << i;
 		enemy[i]->update(delta_time);
 	}
+
 }
 
 void draw(sf::RenderWindow * window) {
@@ -104,15 +110,20 @@ void draw(sf::RenderWindow * window) {
 		star[i]->draw(window);
 	}
 
+    for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->draw(window);
+	}
+
     for (int i = 0; i < enemy_count; i++) {
         enemy[i]->draw(window);
     }
 
 	player->draw(window);
+
 	window->display();
 }
 
-void keyboardListener(sf::Time * delta_time) {
+void keyboardListener(sf::RenderWindow * window, sf::Time * delta_time) {
 
 	// movement keys
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
@@ -130,6 +141,11 @@ void keyboardListener(sf::Time * delta_time) {
 	}
 	else {
 		player->enforceInertia(delta_time);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        Bullet * new_bullet = new Bullet(player->getX(), player->getY(), player->getAngle(), origin);
+        bullet.push_back(new_bullet);
 	}
 }
 

@@ -65,8 +65,8 @@ bool Entity::isIntersecting(Entity * entity) {
 }
 
 void Entity::update() {
-	x = x + origin->getX() - last_origin_x;
-	y = y + origin->getY() - last_origin_y;
+	setX(getX() + origin->getX() - last_origin_x);
+	setY(getY() + origin->getY() - last_origin_y);
 
 	last_origin_x = origin->getX();
 	last_origin_y = origin->getY();

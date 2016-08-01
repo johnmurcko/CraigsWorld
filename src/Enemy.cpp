@@ -67,7 +67,7 @@ void Enemy::draw(sf::RenderWindow * window) {
 	//window->draw(target_rect);
 }
 
-void Enemy::dealloc() {
+Enemy::~Enemy() {
 	if (target) {
 		delete target;
 	}

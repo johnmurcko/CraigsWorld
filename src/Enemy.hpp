@@ -17,5 +17,5 @@ class Enemy : public Entity {
 		void update(sf::Time * delta_time);
 		void generateWanderTarget();
 		void draw(sf::RenderWindow * window);
-		void dealloc();
+		~Enemy();
 };
