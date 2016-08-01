@@ -5,9 +5,9 @@
 
 class Enemy : public Entity {
 	private:
-        static const int kTargetWidth = 10;
+        static const int kTargetWidth = 50;
 		static const int kTargetHeight = kTargetWidth;
-		static const int kTargetRange = 50;
+		static const int kTargetRange = 100;
 		float speed;
 		Target * target;
 	public:

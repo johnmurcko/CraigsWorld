@@ -4,6 +4,12 @@
 
 class Player : public Entity {
 	private:
+        static const float kDefaultAcceleration = 50;
+        static const float kDefaultMaxSpeed = 5;
+        static const float kQuarterRotation = 90;
+        static const float kFlipRotation = 180;
+        static const int kWidth = 20;
+        static const int kHeight = 40;
 		float speed;
 		float acceleration;
 		float max_speed;
@@ -35,4 +41,3 @@ class Player : public Entity {
 		void rotateRight(sf::Time * delta_time);
 		void draw(sf::RenderWindow * window);
 };
-

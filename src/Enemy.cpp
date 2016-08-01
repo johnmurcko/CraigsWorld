@@ -35,31 +35,36 @@ void Enemy::generateWanderTarget() {
 void Enemy::update(sf::Time * delta_time) {
 	Entity::update();
 	target->update();
-    //std::cout << '\n' << getX();
-	if (getX() <= target->getX()) {
+
+	if (getX() - target->getX() < 0)  {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
-	else if (getX() > target->getX()) {
+	else if (getX() - target->getX() > 0) {
 		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
 
-	if (getY() <= target->getY()) {
+	if (getY() - target->getY() < 0) {
 		move(0, 1 * getSpeed() * delta_time->asSeconds());
 	}
-	else if (getX() > target->getX()) {
+	else if (getY() - target->getY() > 0) {
 		move(0, -1 * getSpeed() * delta_time->asSeconds());
 	}
 
-    if (isIntersecting(target)) {
+    if (abs(getX() - target->getX()) < 10
+        && abs(getY() - target->getY()) < 10 ) {
         generateWanderTarget();
     }
 }
 
 void Enemy::draw(sf::RenderWindow * window) {
-	sf::RectangleShape enemyRect(sf::Vector2f(10,10));
-	enemyRect.setPosition(getX(), getY());
-	enemyRect.setFillColor(sf::Color::Red);
-	window->draw(enemyRect);
+	sf::RectangleShape enemy_rect(sf::Vector2f(10,10));
+	enemy_rect.setPosition(getX(), getY());
+	enemy_rect.setFillColor(sf::Color::Red);
+	sf::RectangleShape target_rect(sf::Vector2f(50, 50));
+	target_rect.setPosition(target->getX(), target->getY());
+	target_rect.setFillColor(sf::Color::Green);
+	window->draw(enemy_rect);
+	//window->draw(target_rect);
 }
 
 void Enemy::dealloc() {

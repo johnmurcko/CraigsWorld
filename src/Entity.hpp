@@ -15,8 +15,8 @@ class Entity {
 	public:
 		void setX(float x);
 		void setY(float y);
-		void setWidth (int width);
-		void setHeight (int height);
+		void setWidth(int width);
+		void setHeight(int height);
 		float getX();
 		float getY();
 		int getWidth();

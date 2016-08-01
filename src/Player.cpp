@@ -4,12 +4,7 @@
 #include "Constants.hpp"
 #include <iostream>
 
-const float kDefaultAcceleration = 50;
-const float kDefaultMaxSpeed = 5;
-const float kQuarterRotation = 90;
-const float kFlipRotation = 180;
-const int kWidth = 20;
-const int kHeight = 40;
+
 
 Player::Player(float x, float y, Origin * origin) {
 	this->origin = origin;
@@ -119,15 +114,15 @@ void Player::rotateRight(sf::Time * delta_time) {
 }
 
 void Player::draw(sf::RenderWindow * window) {
-    sf::Sprite playerSprite;
-    sf::Texture playerTexture;
-    playerTexture.loadFromFile("res/placeholdership.png");
-    playerSprite.setTexture(playerTexture, true);
-    playerSprite.setOrigin(getWidth() / 2, getHeight() / 2);
-    playerSprite.setPosition(getX(), getY());
-    playerSprite.setRotation(getAngle());
+    sf::Sprite player_sprite;
+    sf::Texture player_texture;
+    player_texture.loadFromFile("res/placeholdership.png");
+    player_sprite.setTexture(player_texture, true);
+    player_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
+    player_sprite.setPosition(getX(), getY());
+    player_sprite.setRotation(getAngle());
 
 
 
-	window->draw(playerSprite);
+	window->draw(player_sprite);
 }
