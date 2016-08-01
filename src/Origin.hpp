@@ -7,12 +7,12 @@ class Origin {
 		float y;
 		float speed;
 	public:
-		Origin (float x, float y);
-		void setX (float x);
-		void setY (float y);
-		float getX ();
-		float getY ();
-		void move (float x_delta, float y_delta);
+		Origin(float x, float y);
+		void setX(float x);
+		void setY(float y);
+		float getX();
+		float getY();
+		void move(float x_delta, float y_delta);
 		float getSpeed();
 };
 

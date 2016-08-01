@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 
-class OriginRock : public Entity {
+class Star : public Entity {
 	public:
-        OriginRock(float x, float y, Origin * origin);
+        Star(float x, float y, Origin * origin);
+        void update();
 		void draw(sf::RenderWindow * window);
 };

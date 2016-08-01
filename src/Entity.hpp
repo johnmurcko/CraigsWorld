@@ -13,16 +13,17 @@ class Entity {
 		float last_origin_y;
 		Origin * origin;
 	public:
-		void setX (float x);
-		void setY (float y);
+		void setX(float x);
+		void setY(float y);
 		void setWidth (int width);
 		void setHeight (int height);
-		float getX ();
-		float getY ();
-		int getWidth ();
-		int getHeight ();
-		void move (float x_delta, float y_delta);
-		void update ();
+		float getX();
+		float getY();
+		int getWidth();
+		int getHeight();
+		void move(float x_delta, float y_delta);
+		bool isIntersecting(Entity * entity);
+		void update();
 };
 
 #endif

@@ -3,43 +3,46 @@
 #include <time.h>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include "Constants.hpp"
 #include "Player.hpp"
-#include "OriginRock.hpp"
-#include "Rock.hpp"
+#include "Star.hpp"
+#include "Enemy.hpp"
 
-const int kWindowWidth = 500;
-const int kWindowHeight = 500;
-const int kMapWidth = 1500;
-const int kMapHeight = 1500;
-const int kRockCount = 1000;
+const int kStarCount = 1000;
+const int kInitialEnemyCount = 100;
 
-const float kPlayerBorderLimit = 10;
+int enemy_count;
 
 void gameInit();
-void gameUpdate(sf::Time delta_time);
+void gameUpdate(sf::Time * delta_time);
 void draw(sf::RenderWindow * window);
-void keyboardListener(sf::Time delta_time);
-void createRocks();
+void keyboardListener(sf::Time * delta_time);
+void createStars();
+void createEnemies();
 void dealloc();
 
+Entity ** entity;
 Player * player;
 Origin * origin;
-OriginRock * origin_rock;
-Rock ** rock;
+Star ** star;
+Enemy ** enemy;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(kWindowWidth, kWindowHeight), "meme time ;)");
+	sf::RenderWindow window(sf::VideoMode(kWindowWidth, kWindowHeight), "Craig's World");
+
+	srand(time(NULL));
 
     gameInit();
 
     sf::Clock delta_clock;
 	sf::Time delta_time;
 
+
     //game loop
-	while (window.isOpen ()) {
-        gameUpdate (delta_time);
-        draw (&window);
+	while (window.isOpen()) {
+        gameUpdate(&delta_time);
+        draw(&window);
 		sf::Event event;
 
 		while (window.pollEvent(event)) {
@@ -47,7 +50,7 @@ int main()
 				window.close();
 		}
 
-		delta_time = delta_clock.restart ();
+		delta_time = delta_clock.restart();
 	}
 
 	dealloc();
@@ -55,85 +58,85 @@ int main()
     return 0;
 }
 
-void gameInit () {
-	origin = new Origin (0, 0);
-	player = new Player (100, 100, origin);
-	origin_rock = new OriginRock (100, 100, origin);
-	createRocks ();
+void gameInit() {
+	origin = new Origin(0, 0);
+	player = new Player(kWindowWidth / 2, kWindowHeight / 2, origin);
+	createStars();
+	createEnemies();
 }
 
-void createRocks () {
-    rock = new Rock*[kRockCount];
-	srand (time (NULL));
-	for (int i = 0; i < kRockCount; i++) {
-		int rand_x = rand () % kMapWidth - kWindowWidth;
-		int rand_y = rand () % kMapHeight - kWindowHeight;
-		rock[i] = new Rock (rand_x, rand_y, origin);
+void createStars() {
+    star = new Star*[kStarCount];
+	for (int i = 0; i < kStarCount; i++) {
+		int rand_x = rand() % kWindowWidth;
+		int rand_y = rand() % kWindowHeight;
+		star[i] = new Star(rand_x, rand_y, origin);
 	}
 }
 
-void gameUpdate (sf::Time delta_time) {
-    keyboardListener (delta_time);
-    origin_rock->update ();
-	for (int i = 0; i < kRockCount; i++) {
-		rock[i]->update ();
+void createEnemies() {
+    enemy_count = kInitialEnemyCount;
+    enemy = new Enemy*[kInitialEnemyCount];
+	for (int i = 0; i < kInitialEnemyCount; i++) {
+		int rand_x = rand() % kMapWidth - kWindowWidth;
+		int rand_y = rand() % kMapHeight - kWindowHeight;
+		enemy[i] = new Enemy(rand_x, rand_y, origin);
 	}
 }
 
-void draw (sf::RenderWindow * window) {
+void gameUpdate(sf::Time * delta_time) {
+    keyboardListener(delta_time);
+
+	for (int i = 0; i < kStarCount; i++) {
+		star[i]->update();
+	}
+
+	for (int i = 0; i < kInitialEnemyCount; i++) {
+        //std::cout << "enemy" << i;
+		enemy[i]->update(delta_time);
+	}
+}
+
+void draw(sf::RenderWindow * window) {
 	window->clear(sf::Color::Black);
 
-	for (int i = 0; i < kRockCount; i++) {
-		rock[i]->draw(window);
+	for (int i = 0; i < kStarCount; i++) {
+		star[i]->draw(window);
 	}
 
-	origin_rock->draw(window);
+    for (int i = 0; i < enemy_count; i++) {
+        enemy[i]->draw(window);
+    }
+
 	player->draw(window);
 	window->display();
 }
 
-void keyboardListener (sf::Time delta_time) {
+void keyboardListener(sf::Time * delta_time) {
 
 	// movement keys
-	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Left)) {
-		if (player->getX () >= 0 + kPlayerBorderLimit) {
-			player->move (-1 * player->getSpeed() * delta_time.asSeconds (), 0);
-		}
-		else {
-			origin->move (1 * player->getSpeed() * delta_time.asSeconds (), 0);
-		}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		player->rotateLeft(delta_time);
 	}
-	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Right)) {
-		if (player->getX () <= kWindowWidth - kPlayerBorderLimit) {
-			player->move (1 * player->getSpeed() * delta_time.asSeconds (), 0);
-		}
-		else {
-			origin->move (-1 * player->getSpeed() * delta_time.asSeconds (), 0);
-		}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		player->rotateRight(delta_time);
 	}
-	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Up)) {
-		if (player->getY () >= 0 + kPlayerBorderLimit) {
-			player->move (0, -1 * player->getSpeed() * delta_time.asSeconds ());
-		}
-		else {
-			origin->move (0, 1 * player->getSpeed() * delta_time.asSeconds ());
-		}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		player->forwardThrust(delta_time);
 	}
-	if (sf::Keyboard::isKeyPressed (sf::Keyboard::Down)) {
-		if (player->getY () <= kWindowHeight - kPlayerBorderLimit) {
-			player->move (0, 1 * player->getSpeed() * delta_time.asSeconds ());
-		}
-		else {
-			origin->move (0, -1 * player->getSpeed() * delta_time.asSeconds ());
-		}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		player->reverseThrust(delta_time);
+	}
+	else {
+		player->enforceInertia(delta_time);
 	}
 }
 
-void dealloc () {
+void dealloc() {
     delete player;
-    delete origin_rock;
     delete origin;
-    for (int i = 0; i < kRockCount; i++) {
-        delete rock[i];
+    for (int i = 0; i < kStarCount; i++) {
+        delete star[i];
     }
 }

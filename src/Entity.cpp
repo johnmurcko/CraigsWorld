@@ -37,6 +37,18 @@ void Entity::move (float x_delta, float y_delta) {
     setY (getY () + y_delta);
 }
 
+bool Entity::isIntersecting (Entity * entity) {
+	if (entity->getX () >= getX ()
+		|| entity->getX () + entity->getWidth() <= getX () + getWidth ()
+		|| entity->getY () >= getY ()
+		|| entity->getY () <= getY () + getHeight ()) {
+
+		return true;
+	}
+
+	return false;
+}
+
 void Entity::update () {
 	x = x + origin->getX () - last_origin_x;
 	y = y + origin->getY () - last_origin_y;
