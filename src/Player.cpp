@@ -2,6 +2,7 @@
 #include <cmath>
 #include "Player.hpp"
 #include "Constants.hpp"
+#include "Trail.hpp"
 #include <iostream>
 
 
@@ -85,6 +86,8 @@ void Player::forwardThrust(sf::Time * delta_time) {
         * getSpeed() * delta_time->asSeconds());
 
 	origin->move(getXVelocity(), getYVelocity());
+
+    createTrail();
 }
 
 void Player::reverseThrust(sf::Time * delta_time) {
@@ -104,8 +107,10 @@ void Player::enforceInertia(sf::Time * delta_time) {
 	origin->move(getXVelocity(), getYVelocity());
 }
 
-void Player::update(sf::Time *delta_time) {
-
+void Player::update(sf::Time * delta_time) {
+    for (unsigned int i = 0; i < trail.size(); i++) {
+        trail.at(i)->update();
+    }
 }
 
 void Player::rotateLeft(sf::Time * delta_time) {
@@ -116,7 +121,17 @@ void Player::rotateRight(sf::Time * delta_time) {
 	setAngle(getAngle() - 450 * delta_time->asSeconds());
 }
 
+void Player::createTrail () {
+    Trail * new_trail = new Trail(getX(), getY() + getHeight(), origin);
+    trail.push_back(new_trail);
+}
+
 void Player::draw(sf::RenderWindow * window) {
+
+    for (unsigned int i = 0; i < trail.size(); i++) {
+        trail.at(i)->draw(window);
+    }
+
     sf::Sprite player_sprite;
     sf::Texture player_texture;
     player_texture.loadFromFile("res/placeholdership.png");

@@ -1,6 +1,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
+#include "Trail.hpp"
 
 class Player : public Entity {
 	private:
@@ -17,6 +18,7 @@ class Player : public Entity {
 		float last_thrust_angle;
 		float x_velocity;
 		float y_velocity;
+        std::vector<Trail*> trail;
 	public:
 		Player(float x, float y, Origin * origin);
 		void setSpeed(float speed);
@@ -39,5 +41,6 @@ class Player : public Entity {
 		void update(sf::Time * delta_time);
 		void rotateLeft(sf::Time * delta_time);
 		void rotateRight(sf::Time * delta_time);
+        void createTrail();
 		void draw(sf::RenderWindow * window);
 };

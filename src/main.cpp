@@ -89,6 +89,8 @@ void createEnemies() {
 void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
     keyboardListener(window, delta_time);
 
+    player->update(delta_time);
+
 	for (int i = 0; i < kStarCount; i++) {
 		star[i]->update();
 	}
