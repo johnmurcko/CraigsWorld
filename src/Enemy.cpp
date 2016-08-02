@@ -6,6 +6,8 @@
 
 Enemy::Enemy(float x, float y, Origin * origin) {
 	this->origin = origin;
+    last_origin_x = origin->getX();
+	last_origin_y = origin->getY();
 	setX(x);
 	setY(y);
 	speed = kDefaultSpeed;

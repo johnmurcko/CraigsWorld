@@ -3,6 +3,8 @@
 
 Bullet::Bullet(float x, float y, float angle, Origin * origin) {
     this->origin = origin;
+    last_origin_x = origin->getX();
+	last_origin_y = origin->getY();
 	setX(x);
 	setY(y);
 	setWidth(10);
@@ -10,9 +12,7 @@ Bullet::Bullet(float x, float y, float angle, Origin * origin) {
 	setAngle(angle - 90);
 	setSpeed(kBulletSpeed);
 	setXVelocity(cos(getAngle()*kDegreesToRadians) * getSpeed());
-    setYVelocity(sin(getAngle()*kDegreesToRadians) * getSpeed());    last_origin_x = origin->getX();
-	last_origin_y = origin->getY();
-
+    setYVelocity(sin(getAngle()*kDegreesToRadians) * getSpeed());
 }
 
 void Bullet::setSpeed(float speed) {

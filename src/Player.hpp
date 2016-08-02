@@ -19,6 +19,7 @@ class Player : public Entity {
 		float x_velocity;
 		float y_velocity;
         std::vector<Trail*> trail;
+        sf::Clock * clock;
 	public:
 		Player(float x, float y, Origin * origin);
 		void setSpeed(float speed);
@@ -43,4 +44,5 @@ class Player : public Entity {
 		void rotateRight(sf::Time * delta_time);
         void createTrail();
 		void draw(sf::RenderWindow * window);
+		~Player();
 };

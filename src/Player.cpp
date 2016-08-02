@@ -17,6 +17,7 @@ Player::Player(float x, float y, Origin * origin) {
 	setAcceleration(kDefaultAcceleration);
 	setMaxSpeed(kDefaultMaxSpeed);
 	setAngle(0);
+	clock = new sf::Clock();
 }
 
 
@@ -87,7 +88,11 @@ void Player::forwardThrust(sf::Time * delta_time) {
 
 	origin->move(getXVelocity(), getYVelocity());
 
-    createTrail();
+    sf::Time time_last_trail = clock->getElapsedTime();
+    if (time_last_trail.asSeconds() > 0.1f) {
+        createTrail();
+        clock->restart();
+    }
 }
 
 void Player::reverseThrust(sf::Time * delta_time) {
@@ -114,15 +119,21 @@ void Player::update(sf::Time * delta_time) {
 }
 
 void Player::rotateLeft(sf::Time * delta_time) {
-	setAngle(getAngle() + 450 * delta_time->asSeconds());
-}
-
-void Player::rotateRight(sf::Time * delta_time) {
 	setAngle(getAngle() - 450 * delta_time->asSeconds());
 }
 
+void Player::rotateRight(sf::Time * delta_time) {
+	setAngle(getAngle() + 450 * delta_time->asSeconds());
+}
+
 void Player::createTrail () {
-    Trail * new_trail = new Trail(getX(), getY() + getHeight(), origin);
+    while (trail.size() > 5) {
+        delete trail.at(0);
+        trail.erase(trail.begin());
+    }
+
+    Trail * new_trail = new Trail(getX() + cos(getLastThrustAngle()*kDegreesToRadians) * 10,
+        getY() + sin(getLastThrustAngle()*kDegreesToRadians) * 10, origin);
     trail.push_back(new_trail);
 }
 
@@ -141,4 +152,11 @@ void Player::draw(sf::RenderWindow * window) {
     player_sprite.setRotation(getAngle());
 
 	window->draw(player_sprite);
+}
+
+Player::~Player() {
+    delete clock;
+    for (unsigned int i = 0; i < trail.size(); i++) {
+        delete trail.at(i);
+    }
 }

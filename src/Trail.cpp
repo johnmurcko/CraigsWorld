@@ -2,6 +2,8 @@
 
 Trail::Trail(float x, float y, Origin * origin) {
     this->origin = origin;
+    last_origin_x = origin->getX();
+	last_origin_y = origin->getY();
     setX(x);
     setY(y);
     setWidth(kTrailWidth);
@@ -9,8 +11,15 @@ Trail::Trail(float x, float y, Origin * origin) {
 }
 
 void Trail::draw(sf::RenderWindow * window) {
-	sf::RectangleShape trail_rect(sf::Vector2f(getWidth(), getHeight()));
-	trail_rect.setPosition(getX(), getY());
-	trail_rect.setFillColor(sf::Color::Yellow);
-	window->draw(trail_rect);
+
+
+	sf::Sprite trail_sprite;
+    sf::Texture trail_texture;
+    trail_texture.loadFromFile("res/placeholdercloud.png");
+    trail_sprite.setTexture(trail_texture, true);
+    trail_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
+    trail_sprite.setPosition(getX(), getY());
+
+
+	window->draw(trail_sprite);
 }
