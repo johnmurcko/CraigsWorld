@@ -5,6 +5,7 @@ Bullet::Bullet(float x, float y, float angle, Origin * origin) {
     this->origin = origin;
     last_origin_x = origin->getX();
 	last_origin_y = origin->getY();
+	destroyed = false;
 	setX(x);
 	setY(y);
 	setWidth(10);
@@ -47,19 +48,36 @@ float Bullet::getYVelocity() {
     return y_velocity;
 }
 
-void Bullet::update(sf::Time * delta_time) {
+bool Bullet::isDestroyed() {
+    return destroyed;
+}
+
+void Bullet::update(std::vector<Entity*> * bullet_target, sf::Time * delta_time) {
 	Entity::update ();
 
-    move(getXVelocity() * delta_time->asSeconds(),
-        getYVelocity() * delta_time->asSeconds());
+    if (!isDestroyed()) {
+        for (int i = 0; i < bullet_target->size(); i++) {
+            if (isIntersecting(bullet_target->at(i))) {
+                delete bullet_target->at(i);
+                bullet_target->erase(bullet_target->begin() + i);
+                destroyed = true;
+                break;
+            }
+        }
+
+        move(getXVelocity() * delta_time->asSeconds(),
+            getYVelocity() * delta_time->asSeconds());
+    }
 }
 
 void Bullet::draw(sf::RenderWindow * window) {
-    sf::RectangleShape bullet_rect(sf::Vector2f(getWidth(),getHeight()));
-    bullet_rect.setOrigin(getWidth() / 2, getHeight() / 2);
-	bullet_rect.setPosition(getX(), getY());
+    if (!isDestroyed()) {
+        sf::RectangleShape bullet_rect(sf::Vector2f(getWidth(),getHeight()));
+        bullet_rect.setOrigin(getWidth() / 2, getHeight() / 2);
+        bullet_rect.setPosition(getX(), getY());
 
-	bullet_rect.setFillColor(sf::Color::Yellow);
-	bullet_rect.setRotation(getAngle());
-	window->draw(bullet_rect);
+        bullet_rect.setFillColor(sf::Color::Yellow);
+        bullet_rect.setRotation(getAngle());
+        window->draw(bullet_rect);
+	}
 }

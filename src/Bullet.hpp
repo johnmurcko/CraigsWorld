@@ -1,9 +1,12 @@
+#ifndef BULLET_H
+#define BULLET_H
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Entity.hpp"
 #include "Constants.hpp"
 
-class Bullet : Entity {
+class Bullet : public Entity {
     private:
         static const float kDestroyDistance = 500;
         static const float kBulletSpeed = 1000;
@@ -11,6 +14,7 @@ class Bullet : Entity {
         float angle;
         float x_velocity;
         float y_velocity;
+        bool destroyed;
     public:
         Bullet(float x, float y, float angle, Origin * origin);
 		void setSpeed(float speed);
@@ -21,6 +25,9 @@ class Bullet : Entity {
 		float getAngle();
 		float getXVelocity();
 		float getYVelocity();
-		void update(sf::Time * delta_time);
+		bool isDestroyed();
+		void update(std::vector<Entity*> * bullet_target, sf::Time * delta_time);
 		void draw(sf::RenderWindow * window);
 };
+
+#endif // BULLET_H

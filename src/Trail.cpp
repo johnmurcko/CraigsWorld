@@ -1,4 +1,5 @@
 #include "Trail.hpp"
+#include "SFML/System.hpp"
 
 Trail::Trail(float x, float y, Origin * origin) {
     this->origin = origin;
@@ -8,10 +9,25 @@ Trail::Trail(float x, float y, Origin * origin) {
     setY(y);
     setWidth(kTrailWidth);
     setHeight(kTrailHeight);
+    clock = new sf::Clock();
+    is_old = false;
 }
 
-void Trail::draw(sf::RenderWindow * window) {
+void Trail::update() {
+    Entity::update();
+    sf::Time time_since_creation = clock->getElapsedTime();
+    if (time_since_creation.asSeconds() > 2) {
+        is_old = true;
+    }
 
+}
+
+bool Trail::isOld() {
+    return is_old;
+}
+
+
+void Trail::draw(sf::RenderWindow * window) {
 
 	sf::Sprite trail_sprite;
     sf::Texture trail_texture;
@@ -22,4 +38,8 @@ void Trail::draw(sf::RenderWindow * window) {
 
 
 	window->draw(trail_sprite);
+}
+
+Trail::~Trail() {
+    delete clock;
 }

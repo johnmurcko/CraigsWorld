@@ -1,3 +1,4 @@
+#include <cmath>
 #include "Entity.hpp"
 
 void Entity::setX(float x) {
@@ -24,6 +25,14 @@ float Entity::getY() {
 	return y;
 }
 
+float Entity::getCenterX () {
+    return getX() + getWidth() / 2;
+}
+
+float Entity::getCenterY() {
+    return getY() + getHeight() / 2;
+}
+
 int Entity::getWidth() {
 	return width;
 }
@@ -37,31 +46,20 @@ void Entity::move(float x_delta, float y_delta) {
     setY(getY() + y_delta);
 }
 
-// TODO: THIS NEEDS TO BE FIXED
 bool Entity::isIntersecting(Entity * entity) {
-    float this_top_left_x = getX();
-    float this_top_left_y = getY();
-    float this_bottom_right_x = getX() + getWidth();
-    float this_bottom_right_y = getY() + getHeight();
+    if (getX() <= entity->getX() + entity->getWidth()
+        && getX() + getWidth() >= entity->getX()
+        && getY() <= entity->getY() + entity->getHeight()
+        && getY() + getHeight() >= entity->getY()) {
 
-    float that_top_left_x = entity->getX();
-    float that_top_left_y = entity->getY();
-    float that_bottom_right_x = entity->getX() + entity->getWidth();
-    float that_bottom_right_y = entity->getY() + entity->getHeight();
-
-	if (this_top_left_x > that_bottom_right_x
-        || this_bottom_right_x > that_top_left_x) {
-
-        return false;
+        return true;
     }
 
-    if (this_top_left_y > that_bottom_right_y
-        || this_bottom_right_y > that_top_left_y) {
+    return false;
+}
 
-        return false;
-    }
-
-    return true;
+float Entity::distanceFrom(Entity * entity) {
+    return sqrt(pow(getX() - entity->getX(), 2) + pow(getY() - entity->getY(), 2));
 }
 
 void Entity::update() {

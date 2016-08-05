@@ -36,26 +36,25 @@ void Enemy::generateWanderTarget() {
 
 void Enemy::update(sf::Time * delta_time) {
 	Entity::update();
-	target->update();
+	target->update(delta_time);
 
-	if (getX() - target->getX() < 0)  {
+	if (getX() < target->getCenterX())  {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
-	else if (getX() - target->getX() > 0) {
+	else if (getX() > target->getCenterX()) {
 		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
 
-	if (getY() - target->getY() < 0) {
+	if (getY() < target->getCenterY()) {
 		move(0, 1 * getSpeed() * delta_time->asSeconds());
 	}
-	else if (getY() - target->getY() > 0) {
+	else if (getY() > target->getCenterY()) {
 		move(0, -1 * getSpeed() * delta_time->asSeconds());
 	}
 
-    if (abs(getX() - target->getX()) < 10
-        && abs(getY() - target->getY()) < 10 ) {
+	if (isIntersecting(target)) {
         generateWanderTarget();
-    }
+	}
 }
 
 void Enemy::draw(sf::RenderWindow * window) {
@@ -66,7 +65,6 @@ void Enemy::draw(sf::RenderWindow * window) {
 	target_rect.setPosition(target->getX(), target->getY());
 	target_rect.setFillColor(sf::Color::Green);
 	window->draw(enemy_rect);
-	//window->draw(target_rect);
 }
 
 Enemy::~Enemy() {

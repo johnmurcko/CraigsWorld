@@ -3,14 +3,16 @@
 #include "Player.hpp"
 #include "Constants.hpp"
 #include "Trail.hpp"
+#include "Bullet.hpp"
+#include "Enemy.hpp"
 #include <iostream>
 
 
 
 Player::Player(float x, float y, Origin * origin) {
 	this->origin = origin;
-	setX(x);
-	setY(y);
+	setX(x - kWidth);
+	setY(y - kHeight);
 	setWidth(kWidth);
 	setHeight(kHeight);
 	setSpeed(5);
@@ -112,10 +114,23 @@ void Player::enforceInertia(sf::Time * delta_time) {
 	origin->move(getXVelocity(), getYVelocity());
 }
 
-void Player::update(sf::Time * delta_time) {
+void Player::update(std::vector<Entity*> * enemy, sf::Time * delta_time) {
     for (unsigned int i = 0; i < trail.size(); i++) {
         trail.at(i)->update();
     }
+    if (trail.size() > 0 && trail.at(0)->isOld()) {
+        delete trail.at(0);
+        trail.erase(trail.begin());
+    }
+
+	for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->update(enemy, delta_time);
+        if (distanceFrom(bullet.at(i)) > 500) {
+            delete bullet.at(i);
+            bullet.erase(bullet.begin() + i);
+            i--;
+        }
+	}
 }
 
 void Player::rotateLeft(sf::Time * delta_time) {
@@ -126,15 +141,15 @@ void Player::rotateRight(sf::Time * delta_time) {
 	setAngle(getAngle() + 450 * delta_time->asSeconds());
 }
 
-void Player::createTrail () {
-    while (trail.size() > 5) {
-        delete trail.at(0);
-        trail.erase(trail.begin());
-    }
-
+void Player::createTrail() {
     Trail * new_trail = new Trail(getX() + cos(getLastThrustAngle()*kDegreesToRadians) * 10,
         getY() + sin(getLastThrustAngle()*kDegreesToRadians) * 10, origin);
     trail.push_back(new_trail);
+}
+
+void Player::fireBullet() {
+    Bullet * new_bullet = new Bullet(getCenterX(), getCenterY(), getAngle(), origin);
+    bullet.push_back(new_bullet);
 }
 
 void Player::draw(sf::RenderWindow * window) {
@@ -143,12 +158,16 @@ void Player::draw(sf::RenderWindow * window) {
         trail.at(i)->draw(window);
     }
 
+    for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->draw(window);
+	}
+
     sf::Sprite player_sprite;
     sf::Texture player_texture;
     player_texture.loadFromFile("res/placeholdership.png");
     player_sprite.setTexture(player_texture, true);
     player_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
-    player_sprite.setPosition(getX(), getY());
+    player_sprite.setPosition(getCenterX(), getCenterY());
     player_sprite.setRotation(getAngle());
 
 	window->draw(player_sprite);

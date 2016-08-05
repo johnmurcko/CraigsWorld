@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.hpp"
 #include "Trail.hpp"
+#include "Bullet.hpp"
+#include "Enemy.hpp"
 
 class Player : public Entity {
 	private:
@@ -19,6 +21,7 @@ class Player : public Entity {
 		float x_velocity;
 		float y_velocity;
         std::vector<Trail*> trail;
+        std::vector<Bullet*> bullet;
         sf::Clock * clock;
 	public:
 		Player(float x, float y, Origin * origin);
@@ -39,10 +42,11 @@ class Player : public Entity {
 		void forwardThrust(sf::Time * delta_time);
 		void reverseThrust(sf::Time * delta_time);
 		void enforceInertia(sf::Time * delta_time);
-		void update(sf::Time * delta_time);
+		void update(std::vector<Entity*> * enemy, sf::Time * delta_time);
 		void rotateLeft(sf::Time * delta_time);
 		void rotateRight(sf::Time * delta_time);
         void createTrail();
+        void fireBullet();
 		void draw(sf::RenderWindow * window);
 		~Player();
 };
