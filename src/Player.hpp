@@ -24,6 +24,7 @@ class Player : public Entity {
         std::vector<Bullet*> bullet;
         sf::Clock * clock;
 	public:
+        static Player * shared_player;
 		Player(float x, float y, Origin * origin);
 		void setSpeed(float speed);
 		void setAcceleration(float acceleration);

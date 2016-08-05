@@ -10,6 +10,10 @@
 
 
 Player::Player(float x, float y, Origin * origin) {
+    if (shared_player) return;
+
+    shared_player = this;
+
 	this->origin = origin;
 	setX(x - kWidth);
 	setY(y - kHeight);
@@ -125,7 +129,7 @@ void Player::update(std::vector<Entity*> * enemy, sf::Time * delta_time) {
 
 	for (unsigned int i = 0; i < bullet.size(); i++) {
         bullet.at(i)->update(enemy, delta_time);
-        if (distanceFrom(bullet.at(i)) > 500) {
+        if (distanceFrom(bullet.at(i)) > 500 || bullet.at(i)->isDestroyed()) {
             delete bullet.at(i);
             bullet.erase(bullet.begin() + i);
             i--;
@@ -134,11 +138,11 @@ void Player::update(std::vector<Entity*> * enemy, sf::Time * delta_time) {
 }
 
 void Player::rotateLeft(sf::Time * delta_time) {
-	setAngle(getAngle() - 450 * delta_time->asSeconds());
+	setAngle(getAngle() - 200 * delta_time->asSeconds());
 }
 
 void Player::rotateRight(sf::Time * delta_time) {
-	setAngle(getAngle() + 450 * delta_time->asSeconds());
+	setAngle(getAngle() + 200 * delta_time->asSeconds());
 }
 
 void Player::createTrail() {
