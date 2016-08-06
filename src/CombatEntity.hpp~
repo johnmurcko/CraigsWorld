@@ -1,7 +1,0 @@
-
-class CombatEntity : public Entity {
-	private:
-		int damage;
-	public:
-		virtual void isHit() {};
-};
