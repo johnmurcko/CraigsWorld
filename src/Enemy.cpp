@@ -3,14 +3,16 @@
 #include <time.h>
 #include "Enemy.hpp"
 #include "Constants.hpp"
+#include "Player.hpp"
 
-Enemy::Enemy(float x, float y, Origin * origin) {
-	this->origin = origin;
+Enemy::Enemy(float x, float y) {
+	origin = Origin::getInstance();
     last_origin_x = origin->getX();
 	last_origin_y = origin->getY();
 	setX(x);
 	setY(y);
 	speed = kDefaultSpeed;
+	is_wandering = true;
 	target = NULL;
 	generateWanderTarget();
 }
@@ -36,19 +38,44 @@ void Enemy::generateWanderTarget() {
 
 void Enemy::update(sf::Time * delta_time) {
 	Entity::update();
-	target->update(delta_time);
+	if (is_wandering) {
+		wander(delta_time);
+	}
 
+	if (distanceFrom(Player::getInstance()) < 200) {
+		is_wandering = false;
+		followPlayer(delta_time);
+	}
+	else {
+		is_wandering = true;
+	}
+
+
+	std::vector<CombatEntity*> player;
+	player.push_back(Player::getInstance());
+	for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->update(&player, delta_time);
+        if (distanceFrom(bullet.at(i)) > 500 || bullet.at(i)->isDestroyed()) {
+            delete bullet.at(i);
+            bullet.erase(bullet.begin() + i);
+            i--;
+        }
+	}
+}
+
+void Enemy::wander(sf::Time * delta_time) {
+	target->update(delta_time);
 	if (getX() < target->getCenterX())  {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
-	else if (getX() > target->getCenterX()) {
+	else {
 		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
 
 	if (getY() < target->getCenterY()) {
 		move(0, 1 * getSpeed() * delta_time->asSeconds());
 	}
-	else if (getY() > target->getCenterY()) {
+	else {
 		move(0, -1 * getSpeed() * delta_time->asSeconds());
 	}
 
@@ -57,7 +84,38 @@ void Enemy::update(sf::Time * delta_time) {
 	}
 }
 
+void Enemy::followPlayer (sf::Time * delta_time) {
+	if (getCenterX() < Player::getInstance()->getCenterX()) {
+		move(1 * getSpeed() * delta_time->asSeconds(), 0);
+		fireBullet();
+	}
+	else {
+		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
+	}
+
+	if (getCenterY() < Player::getInstance()->getCenterY()) {
+		move(0, 1 * getSpeed() * delta_time->asSeconds());
+	}
+	else {
+		move(0, -1 * getSpeed() * delta_time->asSeconds());
+	}
+
+	if (isIntersecting(Player::getInstance())) {
+		//Player::getInstance()->loseHealth();
+	}
+}
+
+void Enemy::fireBullet() {
+    Bullet * new_bullet = new Bullet(getCenterX(), getCenterY(),
+		angleTo(Player::getInstance()));
+    bullet.push_back(new_bullet);
+}
+
 void Enemy::draw(sf::RenderWindow * window) {
+    for (unsigned int i = 0; i < bullet.size(); i++) {
+        bullet.at(i)->draw(window);
+	}
+
 	sf::RectangleShape enemy_rect(sf::Vector2f(10,10));
 	enemy_rect.setPosition(getX(), getY());
 	enemy_rect.setFillColor(sf::Color::Red);

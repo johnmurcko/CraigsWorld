@@ -12,7 +12,7 @@ class Trail : public Entity {
         bool is_old;
         sf::Clock * clock;
     public:
-        Trail(float x, float y, Origin * origin);
+        Trail(float x, float y);
         void update();
         bool isOld();
         void draw(sf::RenderWindow * window);

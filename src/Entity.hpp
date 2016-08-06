@@ -27,7 +27,8 @@ class Entity {
 		int getHeight();
 		void move(float x_delta, float y_delta);
 		bool isIntersecting(Entity * entity);
-		float distanceFrom(Entity * Entity);
+		float distanceFrom(Entity * entity);
+		float angleTo(Entity * entity);
 		void update();
 		virtual void update(sf::Time * delta_time) {};
 		virtual void draw(sf::RenderWindow * window) {};

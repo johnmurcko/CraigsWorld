@@ -1,8 +1,8 @@
 #include "Bullet.hpp"
 #include <iostream>
 
-Bullet::Bullet(float x, float y, float angle, Origin * origin) {
-    this->origin = origin;
+Bullet::Bullet(float x, float y, float angle) {
+	origin = Origin::getInstance();
     last_origin_x = origin->getX();
 	last_origin_y = origin->getY();
 	destroyed = false;
@@ -22,6 +22,11 @@ void Bullet::setSpeed(float speed) {
 
 void Bullet::setAngle(float angle) {
 	this->angle = angle;
+}
+
+void Bullet::setVelocity(float x_velocity, float y_velocity) {
+    setXVelocity(x_velocity);
+    setYVelocity(y_velocity);
 }
 
 void Bullet::setXVelocity(float x_velocity) {
@@ -52,15 +57,14 @@ bool Bullet::isDestroyed() {
     return destroyed;
 }
 
-void Bullet::update(std::vector<Entity*> * bullet_target, sf::Time * delta_time) {
+void Bullet::update(std::vector<CombatEntity*> * bullet_target, sf::Time * delta_time) {
 	Entity::update ();
 
     if (!isDestroyed()) {
-        for (int i = 0; i < bullet_target->size(); i++) {
+        for (unsigned int i = 0; i < bullet_target->size(); i++) {
             if (isIntersecting(bullet_target->at(i))) {
-                delete bullet_target->at(i);
-                bullet_target->erase(bullet_target->begin() + i);
-                destroyed = true;
+                bullet_target->at(i)->takeDamage();
+               // destroyed = true;
                 break;
             }
         }

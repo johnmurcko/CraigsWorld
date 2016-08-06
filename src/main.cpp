@@ -27,7 +27,7 @@ Entity ** entity;
 Player * player;
 Origin * origin;
 Star ** star;
-std::vector<Entity*> enemy;
+std::vector<CombatEntity*> enemy;
 
 int main()
 {
@@ -63,8 +63,8 @@ int main()
 }
 
 void gameInit() {
-	origin = new Origin(0, 0);
-	player = new Player(kWindowWidth / 2, kWindowHeight / 2, origin);
+	origin = Origin::getInstance();
+	player = Player::getInstance();
 	createStars();
 	createEnemies();
 }
@@ -74,7 +74,7 @@ void createStars() {
 	for (int i = 0; i < kStarCount; i++) {
 		int rand_x = rand() % kWindowWidth;
 		int rand_y = rand() % kWindowHeight;
-		star[i] = new Star(rand_x, rand_y, origin);
+		star[i] = new Star(rand_x, rand_y);
 	}
 }
 
@@ -82,7 +82,7 @@ void createEnemies() {
 	for (int i = 0; i < kInitialEnemyCount; i++) {
 		int rand_x = rand() % kMapWidth - kWindowWidth;
 		int rand_y = rand() % kMapHeight - kWindowHeight;
-		enemy.push_back(new Enemy(rand_x, rand_y, origin));
+		enemy.push_back(new Enemy(rand_x, rand_y));
 	}
 }
 

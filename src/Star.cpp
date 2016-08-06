@@ -1,8 +1,8 @@
 #include "Star.hpp"
 #include "Constants.hpp"
 
-Star::Star(float x, float y, Origin * origin) {
-    this->origin = origin;
+Star::Star(float x, float y) {
+	origin = Origin::getInstance();
 	last_origin_x = origin->getX();
 	last_origin_y = origin->getY();
     setX(x);

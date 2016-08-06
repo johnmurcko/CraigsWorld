@@ -62,6 +62,10 @@ float Entity::distanceFrom(Entity * entity) {
     return sqrt(pow(getX() - entity->getX(), 2) + pow(getY() - entity->getY(), 2));
 }
 
+float Entity::angleTo(Entity * entity) {
+	return sin((entity->getCenterY() - getCenterY()) / (entity->getCenterX() - getCenterX()));
+}
+
 void Entity::update() {
 	setX(getX() + origin->getX() - last_origin_x);
 	setY(getY() + origin->getY() - last_origin_y);

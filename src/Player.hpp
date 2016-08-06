@@ -1,18 +1,18 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include "Entity.hpp"
+#include "CombatEntity.hpp"
 #include "Trail.hpp"
-#include "Bullet.hpp"
+#include "PlayerBullet.hpp"
 #include "Enemy.hpp"
 
-class Player : public Entity {
+class Player : public CombatEntity {
 	private:
         static const float kDefaultAcceleration = 50;
         static const float kDefaultMaxSpeed = 5;
         static const float kQuarterRotation = 90;
         static const float kFlipRotation = 180;
-        static const int kWidth = 20;
-        static const int kHeight = 40;
+        static const int kWidth = 71;
+        static const int kHeight = 142;
 		float speed;
 		float acceleration;
 		float max_speed;
@@ -21,11 +21,13 @@ class Player : public Entity {
 		float x_velocity;
 		float y_velocity;
         std::vector<Trail*> trail;
-        std::vector<Bullet*> bullet;
+        std::vector<PlayerBullet*> bullet;
         sf::Clock * clock;
-	public:
+        static bool instance_exists;
         static Player * shared_player;
-		Player(float x, float y, Origin * origin);
+	public:
+		Player(float x, float y);
+		static Player * getInstance();
 		void setSpeed(float speed);
 		void setAcceleration(float acceleration);
 		void setMaxSpeed(float max_speed);
@@ -43,11 +45,12 @@ class Player : public Entity {
 		void forwardThrust(sf::Time * delta_time);
 		void reverseThrust(sf::Time * delta_time);
 		void enforceInertia(sf::Time * delta_time);
-		void update(std::vector<Entity*> * enemy, sf::Time * delta_time);
+		void update(std::vector<CombatEntity*> * enemy, sf::Time * delta_time);
 		void rotateLeft(sf::Time * delta_time);
 		void rotateRight(sf::Time * delta_time);
         void createTrail();
         void fireBullet();
+		void loseHealth();
 		void draw(sf::RenderWindow * window);
 		~Player();
 };

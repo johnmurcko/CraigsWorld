@@ -1,20 +1,18 @@
-#include <SFML/System.hpp>
+#include <stddef.h>
 #include <cmath>
+#include <SFML/System.hpp>
 #include "Player.hpp"
 #include "Constants.hpp"
 #include "Trail.hpp"
-#include "Bullet.hpp"
+#include "PlayerBullet.hpp"
 #include "Enemy.hpp"
 #include <iostream>
 
+bool Player::instance_exists = false;
+Player * Player::shared_player = NULL;
 
-
-Player::Player(float x, float y, Origin * origin) {
-    if (shared_player) return;
-
-    shared_player = this;
-
-	this->origin = origin;
+Player::Player(float x, float y) {
+	origin = Origin::getInstance();
 	setX(x - kWidth);
 	setY(y - kHeight);
 	setWidth(kWidth);
@@ -26,6 +24,16 @@ Player::Player(float x, float y, Origin * origin) {
 	clock = new sf::Clock();
 }
 
+Player * Player::getInstance() {
+    if (instance_exists) {
+        return shared_player;
+    }
+
+    instance_exists = true;
+    shared_player = new Player(kWindowWidth / 2, kWindowHeight / 2);
+
+    return shared_player;
+}
 
 void Player::setSpeed(float speed) {
 	this->speed = speed;
@@ -118,7 +126,7 @@ void Player::enforceInertia(sf::Time * delta_time) {
 	origin->move(getXVelocity(), getYVelocity());
 }
 
-void Player::update(std::vector<Entity*> * enemy, sf::Time * delta_time) {
+void Player::update(std::vector<CombatEntity*> * enemy, sf::Time * delta_time) {
     for (unsigned int i = 0; i < trail.size(); i++) {
         trail.at(i)->update();
     }
@@ -129,7 +137,7 @@ void Player::update(std::vector<Entity*> * enemy, sf::Time * delta_time) {
 
 	for (unsigned int i = 0; i < bullet.size(); i++) {
         bullet.at(i)->update(enemy, delta_time);
-        if (distanceFrom(bullet.at(i)) > 500 || bullet.at(i)->isDestroyed()) {
+        if (bullet.at(i)->isDestroyed()) {
             delete bullet.at(i);
             bullet.erase(bullet.begin() + i);
             i--;
@@ -146,14 +154,18 @@ void Player::rotateRight(sf::Time * delta_time) {
 }
 
 void Player::createTrail() {
-    Trail * new_trail = new Trail(getX() + cos(getLastThrustAngle()*kDegreesToRadians) * 10,
-        getY() + sin(getLastThrustAngle()*kDegreesToRadians) * 10, origin);
+    Trail * new_trail = new Trail(getCenterX() + cos(getLastThrustAngle()*kDegreesToRadians) * 50,
+        getCenterY() + sin(getLastThrustAngle()*kDegreesToRadians) * 50);
     trail.push_back(new_trail);
 }
 
 void Player::fireBullet() {
-    Bullet * new_bullet = new Bullet(getCenterX(), getCenterY(), getAngle(), origin);
+    PlayerBullet * new_bullet = new PlayerBullet(getCenterX(), getCenterY(), getAngle());
     bullet.push_back(new_bullet);
+}
+
+void Player::loseHealth() {
+
 }
 
 void Player::draw(sf::RenderWindow * window) {
@@ -166,15 +178,22 @@ void Player::draw(sf::RenderWindow * window) {
         bullet.at(i)->draw(window);
 	}
 
+	sf::RectangleShape rect(sf::Vector2f(getWidth(), getHeight()));
+	rect.setPosition(getCenterX(), getCenterY());
+	rect.setOrigin(getWidth()/2, getHeight()/2);
+	rect.setOutlineColor(sf::Color::Red);
+
+
     sf::Sprite player_sprite;
     sf::Texture player_texture;
-    player_texture.loadFromFile("res/placeholdership.png");
+    player_texture.loadFromFile("res/player.png");
     player_sprite.setTexture(player_texture, true);
     player_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
     player_sprite.setPosition(getCenterX(), getCenterY());
     player_sprite.setRotation(getAngle());
 
 	window->draw(player_sprite);
+	//window->draw(rect);
 }
 
 Player::~Player() {

@@ -6,8 +6,11 @@ class Origin {
 		float x;
 		float y;
 		float speed;
+		static bool instance_exists;
+		static Origin * shared_origin;
 	public:
 		Origin(float x, float y);
+		static Origin * getInstance();
 		void setX(float x);
 		void setY(float y);
 		float getX();
