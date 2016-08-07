@@ -55,14 +55,6 @@ void Player::setLastThrustAngle(float last_thrust_angle) {
     this->last_thrust_angle = last_thrust_angle;
 }
 
-void Player::setXVelocity(float x_velocity) {
-    this->x_velocity = x_velocity;
-}
-
-void Player::setYVelocity(float y_velocity) {
-    this->y_velocity = y_velocity;
-}
-
 float Player::getSpeed() {
 	return speed;
 }
@@ -81,14 +73,6 @@ float Player::getAngle() {
 
 float Player::getLastThrustAngle() {
     return last_thrust_angle;
-}
-
-float Player::getXVelocity() {
-    return x_velocity;
-}
-
-float Player::getYVelocity() {
-    return y_velocity;
 }
 
 void Player::forwardThrust(sf::Time * delta_time) {

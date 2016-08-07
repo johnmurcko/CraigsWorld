@@ -9,11 +9,14 @@
 
 class Enemy : public CombatEntity {
 	private:
-        static const int kTargetWidth = 50;
-		static const int kTargetHeight = kTargetWidth;
-		static const int kTargetRange = 100;
+        static const int kTargetWidth = 70;
+		static const int kTargetHeight = 108;
+		static const int kTargetRange = 1000;
+		static const int basic_enemy_one = 0;
+		static const int basic_enemy_two = 1;
 		float speed;
 		bool is_wandering;
+		int enemy_type;
 		Target * target;
         sf::Clock * clock;
 		std::vector<Bullet*> bullet;

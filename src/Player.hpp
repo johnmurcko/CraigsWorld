@@ -18,8 +18,6 @@ class Player : public CombatEntity {
 		float max_speed;
 		float angle;
 		float last_thrust_angle;
-		float x_velocity;
-		float y_velocity;
         std::vector<Trail*> trail;
         std::vector<PlayerBullet*> bullet;
         sf::Clock * clock;
@@ -33,15 +31,11 @@ class Player : public CombatEntity {
 		void setMaxSpeed(float max_speed);
 		void setAngle(float angle);
 		void setLastThrustAngle(float last_thrust_angle);
-		void setXVelocity(float x_velocity);
-		void setYVelocity(float y_velocity);
 		float getSpeed();
 		float getAcceleration();
 		float getMaxSpeed();
 		float getAngle();
 		float getLastThrustAngle();
-		float getXVelocity();
-		float getYVelocity();
 		void forwardThrust(sf::Time * delta_time);
 		void reverseThrust(sf::Time * delta_time);
 		void enforceInertia(sf::Time * delta_time);

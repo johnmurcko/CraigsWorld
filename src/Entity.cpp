@@ -18,6 +18,22 @@ void Entity::setHeight(int height) {
 	this->height = height;
 }
 
+void Entity::setXVelocity(float x_velocity) {
+    this->x_velocity = x_velocity;
+}
+
+void Entity::setYVelocity(float y_velocity) {
+    this->y_velocity = y_velocity;
+}
+
+float Entity::getXVelocity() {
+    return x_velocity;
+}
+
+float Entity::getYVelocity() {
+    return y_velocity;
+}
+
 float Entity::getX() {
 	return x;
 }

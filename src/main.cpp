@@ -10,7 +10,7 @@
 #include "Enemy.hpp"
 
 const int kStarCount = 1000;
-const int kInitialEnemyCount = 1000;
+const int kInitialEnemyCount = 100;
 
 int enemy_count;
 
@@ -33,6 +33,8 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(kWindowWidth, kWindowHeight), "Craig's World");
 
+	//window.setVerticalSyncEnabled(true);
+	window.setFramerateLimit(60);
 	srand(time(NULL));
 
     gameInit();
@@ -40,9 +42,11 @@ int main()
     sf::Clock delta_clock;
 	sf::Time delta_time;
 
-
     //game loop
 	while (window.isOpen()) {
+	    float last_time = 0;
+		delta_time = delta_clock.restart();
+
         gameUpdate(&window, &delta_time);
         draw(&window);
 		sf::Event event;
@@ -54,7 +58,8 @@ int main()
 				window.close();
 		}
 
-		delta_time = delta_clock.restart();
+		float fps = 1.f / (delta_time.asSeconds() - last_time);
+		std::cout << fps << '\n';
 	}
 
 	dealloc();

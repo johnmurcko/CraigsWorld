@@ -11,7 +11,8 @@ Enemy::Enemy(float x, float y) {
 	last_origin_y = origin->getY();
 	setX(x);
 	setY(y);
-	speed = kDefaultSpeed;
+    enemy_type = rand() % 2;
+	speed = kDefaultSpeed / 100;
 	is_wandering = true;
 	target = NULL;
     clock = new sf::Clock();
@@ -42,17 +43,16 @@ void Enemy::update(sf::Time * delta_time) {
     target->update();
 
 	if (is_wandering) {
-		wander(delta_time);
+//		wander(delta_time);
 	}
 
 	if (distanceFrom(Player::getInstance()) < 200) {
 		is_wandering = false;
-		followPlayer(delta_time);
+//		followPlayer(delta_time);
 	}
 	else {
 		is_wandering = true;
 	}
-
 
 	std::vector<CombatEntity*> player;
 	player.push_back(Player::getInstance());
@@ -67,19 +67,11 @@ void Enemy::update(sf::Time * delta_time) {
 }
 
 void Enemy::wander(sf::Time * delta_time) {
-	if (getX() < target->getCenterX())  {
-		move(1 * getSpeed() * delta_time->asSeconds(), 0);
-	}
-	else if (getX() > target->getCenterX()){
-		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
-	}
 
-	if (getY() < target->getCenterY()) {
-		move(0, 1 * getSpeed() * delta_time->asSeconds());
-	}
-	else if (getY() > target->getCenterY()){
-		move(0, -1 * getSpeed() * delta_time->asSeconds());
-	}
+    setXVelocity(cos(angleTo(target)*kDegreesToRadians) * getSpeed());
+    setYVelocity(sin(angleTo(target)*kDegreesToRadians) * getSpeed());
+
+	move(getXVelocity(), getYVelocity());
 
 	if (isIntersecting(target)) {
         generateWanderTarget();
@@ -87,19 +79,7 @@ void Enemy::wander(sf::Time * delta_time) {
 }
 
 void Enemy::followPlayer (sf::Time * delta_time) {
-	if (getCenterX() < Player::getInstance()->getCenterX()) {
-		move(1 * getSpeed() * delta_time->asSeconds(), 0);
-	}
-	else {
-		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
-	}
 
-	if (getCenterY() < Player::getInstance()->getCenterY()) {
-		move(0, 1 * getSpeed() * delta_time->asSeconds());
-	}
-	else {
-		move(0, -1 * getSpeed() * delta_time->asSeconds());
-	}
 
     sf::Time time_since_last_fire = clock->getElapsedTime();
 
@@ -132,8 +112,24 @@ void Enemy::draw(sf::RenderWindow * window) {
 	sf::RectangleShape target_rect(sf::Vector2f(50, 50));
 	target_rect.setPosition(target->getX(), target->getY());
 	target_rect.setFillColor(sf::Color::Green);
-	window->draw(enemy_rect);
-	window->draw(target_rect);
+	//window->draw(enemy_rect);
+
+	sf::Sprite enemy_sprite;
+	sf::Texture enemy_texture;
+	if (enemy_type == basic_enemy_one) {
+        enemy_texture.loadFromFile("res/enemy-1.png");
+        enemy_sprite.setScale(0.7f, 0.7f);
+
+	}
+	else if (enemy_type == basic_enemy_two) {
+        enemy_texture.loadFromFile("res/enemy-2.png");
+	}
+	enemy_sprite.setTexture(enemy_texture, true);
+	enemy_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
+	enemy_sprite.setPosition(getCenterX(), getCenterY());
+
+	window->draw(enemy_sprite);
+	//window->draw(target_rect);
 }
 
 Enemy::~Enemy() {
