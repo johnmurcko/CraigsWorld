@@ -14,6 +14,7 @@ Enemy::Enemy(float x, float y) {
 	speed = kDefaultSpeed;
 	is_wandering = true;
 	target = NULL;
+    clock = new sf::Clock();
 	generateWanderTarget();
 }
 
@@ -33,7 +34,7 @@ void Enemy::generateWanderTarget() {
 
     float rand_x = getX() +(rand() % kTargetRange) -(kTargetRange / 2);
     float rand_y = getY() +(rand() % kTargetRange) -(kTargetRange / 2);
-	target = new Target(rand_x, rand_y, kTargetWidth, kTargetHeight, origin);
+	target = new Target(rand_x, rand_y, kTargetWidth, kTargetHeight);
 }
 
 void Enemy::update(sf::Time * delta_time) {
@@ -68,14 +69,14 @@ void Enemy::wander(sf::Time * delta_time) {
 	if (getX() < target->getCenterX())  {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
-	else {
+	else if (getX() > target->getCenterX()){
 		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
 
 	if (getY() < target->getCenterY()) {
 		move(0, 1 * getSpeed() * delta_time->asSeconds());
 	}
-	else {
+	else if (getY() > target->getCenterY()){
 		move(0, -1 * getSpeed() * delta_time->asSeconds());
 	}
 
@@ -87,7 +88,6 @@ void Enemy::wander(sf::Time * delta_time) {
 void Enemy::followPlayer (sf::Time * delta_time) {
 	if (getCenterX() < Player::getInstance()->getCenterX()) {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
-		fireBullet();
 	}
 	else {
 		move(-1 * getSpeed() * delta_time->asSeconds(), 0);
@@ -98,6 +98,15 @@ void Enemy::followPlayer (sf::Time * delta_time) {
 	}
 	else {
 		move(0, -1 * getSpeed() * delta_time->asSeconds());
+	}
+
+    sf::Time time_since_last_fire = clock->getElapsedTime();
+
+	if (distanceFrom(Player::getInstance()) < 500
+        && time_since_last_fire.asSeconds() > 1) {
+
+        fireBullet();
+        clock->restart();
 	}
 
 	if (isIntersecting(Player::getInstance())) {

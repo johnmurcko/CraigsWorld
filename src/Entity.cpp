@@ -1,5 +1,6 @@
 #include <cmath>
 #include "Entity.hpp"
+#include "Constants.hpp"
 
 void Entity::setX(float x) {
 	this->x = x;
@@ -63,7 +64,7 @@ float Entity::distanceFrom(Entity * entity) {
 }
 
 float Entity::angleTo(Entity * entity) {
-	return sin((entity->getCenterY() - getCenterY()) / (entity->getCenterX() - getCenterX()));
+	return atan2((entity->getCenterY() - getCenterY()), (entity->getCenterX() - getCenterX())) * kRadiansToDegrees + 90;
 }
 
 void Entity::update() {

@@ -2,5 +2,5 @@
 
 class Target : public Entity {
 	public:
-		Target(float x, float y, int width, int height, Origin * origin);
+		Target(float x, float y, int width, int height);
 };

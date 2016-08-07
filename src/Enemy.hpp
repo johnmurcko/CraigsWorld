@@ -15,6 +15,7 @@ class Enemy : public CombatEntity {
 		float speed;
 		bool is_wandering;
 		Target * target;
+        sf::Clock * clock;
 		std::vector<Bullet*> bullet;
 	public:
 		Enemy(float x, float y);
