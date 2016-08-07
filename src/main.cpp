@@ -139,7 +139,7 @@ void realTimeKeyboardListener(sf::RenderWindow * window, sf::Time * delta_time) 
 
 void eventKeyboardListener(sf::Event * event) {
     if (event->type == sf::Event::KeyReleased) {
-        if (event->key.code == sf::Keyboard::F) {
+        if (event->key.code == sf::Keyboard::LControl) {
             player->fireBullet();
         }
     }

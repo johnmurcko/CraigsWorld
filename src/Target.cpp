@@ -9,4 +9,3 @@ Target::Target(float x, float y, int width, int height) {
 	setWidth(width);
 	setHeight(height);
 }
-

@@ -39,6 +39,8 @@ void Enemy::generateWanderTarget() {
 
 void Enemy::update(sf::Time * delta_time) {
 	Entity::update();
+    target->update();
+
 	if (is_wandering) {
 		wander(delta_time);
 	}
@@ -65,7 +67,6 @@ void Enemy::update(sf::Time * delta_time) {
 }
 
 void Enemy::wander(sf::Time * delta_time) {
-	target->update(delta_time);
 	if (getX() < target->getCenterX())  {
 		move(1 * getSpeed() * delta_time->asSeconds(), 0);
 	}
@@ -132,6 +133,7 @@ void Enemy::draw(sf::RenderWindow * window) {
 	target_rect.setPosition(target->getX(), target->getY());
 	target_rect.setFillColor(sf::Color::Green);
 	window->draw(enemy_rect);
+	window->draw(target_rect);
 }
 
 Enemy::~Enemy() {
