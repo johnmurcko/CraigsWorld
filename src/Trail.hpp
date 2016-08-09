@@ -7,13 +7,18 @@
 
 class Trail : public Entity {
     private:
-        static const int kTrailWidth = 20;
-        static const int kTrailHeight = kTrailWidth;
+        static const int kTrailRadius = 40;
+        float radius;
+        float transparency;
         bool is_old;
         sf::Clock * clock;
     public:
         Trail(float x, float y);
-        void update();
+        void update(sf::Time * delta_time);
+        void setRadius(float radius);
+        void setTransparency(float transparency);
+        float getRadius();
+        float getTransparency();
         bool isOld();
         void draw(sf::RenderWindow * window);
         ~Trail();

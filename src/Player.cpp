@@ -30,7 +30,7 @@ Player * Player::getInstance() {
     }
 
     instance_exists = true;
-    shared_player = new Player(kWindowWidth / 2, kWindowHeight / 2);
+    shared_player = new Player(kWindowWidth / 2 + kWidth / 2, kWindowHeight / 2 + kHeight / 2);
 
     return shared_player;
 }
@@ -112,7 +112,7 @@ void Player::enforceInertia(sf::Time * delta_time) {
 
 void Player::update(std::vector<CombatEntity*> * enemy, sf::Time * delta_time) {
     for (unsigned int i = 0; i < trail.size(); i++) {
-        trail.at(i)->update();
+        trail.at(i)->update(delta_time);
     }
     if (trail.size() > 0 && trail.at(0)->isOld()) {
         delete trail.at(0);
@@ -138,8 +138,8 @@ void Player::rotateRight(sf::Time * delta_time) {
 }
 
 void Player::createTrail() {
-    Trail * new_trail = new Trail(getCenterX() + cos(getLastThrustAngle()*kDegreesToRadians) * 50,
-        getCenterY() + sin(getLastThrustAngle()*kDegreesToRadians) * 50);
+    Trail * new_trail = new Trail(getCenterX() + cos(getLastThrustAngle()*kDegreesToRadians) * 100,
+        getCenterY() + sin(getLastThrustAngle()*kDegreesToRadians) * 100);
     trail.push_back(new_trail);
 }
 
@@ -175,6 +175,7 @@ void Player::draw(sf::RenderWindow * window) {
     player_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
     player_sprite.setPosition(getCenterX(), getCenterY());
     player_sprite.setRotation(getAngle());
+    player_sprite.setScale(0.75f, 0.75f);
 
 	window->draw(player_sprite);
 	//window->draw(rect);

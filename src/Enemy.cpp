@@ -12,7 +12,7 @@ Enemy::Enemy(float x, float y) {
 	setX(x);
 	setY(y);
     enemy_type = rand() % 2;
-	speed = kDefaultSpeed / 100;
+	speed = kDefaultSpeed / 50;
 	is_wandering = true;
 	target = NULL;
     clock = new sf::Clock();
@@ -43,12 +43,12 @@ void Enemy::update(sf::Time * delta_time) {
     target->update();
 
 	if (is_wandering) {
-//		wander(delta_time);
+		wander(delta_time);
 	}
 
-	if (distanceFrom(Player::getInstance()) < 200) {
+	if (distanceFrom(Player::getInstance()) < 500) {
 		is_wandering = false;
-//		followPlayer(delta_time);
+		followPlayer(delta_time);
 	}
 	else {
 		is_wandering = true;
@@ -58,7 +58,7 @@ void Enemy::update(sf::Time * delta_time) {
 	player.push_back(Player::getInstance());
 	for (unsigned int i = 0; i < bullet.size(); i++) {
         bullet.at(i)->update(&player, delta_time);
-        if (distanceFrom(bullet.at(i)) > 500 || bullet.at(i)->isDestroyed()) {
+        if (distanceFrom(bullet.at(i)) > 1000 || bullet.at(i)->isDestroyed()) {
             delete bullet.at(i);
             bullet.erase(bullet.begin() + i);
             i--;
@@ -80,6 +80,10 @@ void Enemy::wander(sf::Time * delta_time) {
 
 void Enemy::followPlayer (sf::Time * delta_time) {
 
+    setXVelocity(cos(angleTo(Player::getInstance())*kDegreesToRadians) * getSpeed());
+    setYVelocity(sin(angleTo(Player::getInstance())*kDegreesToRadians) * getSpeed());
+
+	move(getXVelocity(), getYVelocity());
 
     sf::Time time_since_last_fire = clock->getElapsedTime();
 
@@ -118,7 +122,6 @@ void Enemy::draw(sf::RenderWindow * window) {
 	sf::Texture enemy_texture;
 	if (enemy_type == basic_enemy_one) {
         enemy_texture.loadFromFile("res/enemy-1.png");
-        enemy_sprite.setScale(0.7f, 0.7f);
 
 	}
 	else if (enemy_type == basic_enemy_two) {
@@ -126,7 +129,7 @@ void Enemy::draw(sf::RenderWindow * window) {
 	}
 	enemy_sprite.setTexture(enemy_texture, true);
 	enemy_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
-	enemy_sprite.setPosition(getCenterX(), getCenterY());
+	enemy_sprite.setPosition(getX(), getY());
 
 	window->draw(enemy_sprite);
 	//window->draw(target_rect);

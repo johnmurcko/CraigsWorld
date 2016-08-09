@@ -11,8 +11,8 @@ class Player : public CombatEntity {
         static const float kDefaultMaxSpeed = 5;
         static const float kQuarterRotation = 90;
         static const float kFlipRotation = 180;
-        static const int kWidth = 71;
-        static const int kHeight = 142;
+        static const int kWidth = 142;
+        static const int kHeight = 284;
 		float speed;
 		float acceleration;
 		float max_speed;
