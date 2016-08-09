@@ -9,8 +9,8 @@
 #include "Star.hpp"
 #include "Enemy.hpp"
 
-const int kStarCount = 1000;
-const int kInitialEnemyCount = 100;
+const int kStarCount = 100;
+const int kInitialEnemyCount = 50;
 
 int enemy_count;
 
