@@ -64,7 +64,7 @@ void Bullet::update(std::vector<CombatEntity*> * bullet_target, sf::Time * delta
         for (unsigned int i = 0; i < bullet_target->size(); i++) {
             if (isIntersecting(bullet_target->at(i))) {
                 bullet_target->at(i)->takeDamage();
-               // destroyed = true;
+                destroyed = true;
                 break;
             }
         }
