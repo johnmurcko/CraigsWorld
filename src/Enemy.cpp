@@ -15,6 +15,7 @@ Enemy::Enemy(float x, float y) {
 	speed = kDefaultSpeed / 50;
 	is_wandering = true;
 	target = NULL;
+	setDestroyed(false);
     clock = new sf::Clock();
 	generateWanderTarget();
 }
@@ -49,6 +50,9 @@ void Enemy::update(sf::Time * delta_time) {
 	if (distanceFrom(Player::getInstance()) < 500) {
 		is_wandering = false;
 		followPlayer(delta_time);
+	}
+	else if (distanceFrom(Player::getInstance()) > 2000) {
+        CombatEntity::setDestroyed(true);
 	}
 	else {
 		is_wandering = true;
@@ -103,6 +107,10 @@ void Enemy::fireBullet() {
     Bullet * new_bullet = new Bullet(getCenterX(), getCenterY(),
 		angleTo(Player::getInstance()));
     bullet.push_back(new_bullet);
+}
+
+void Enemy::takeDamage() {
+    CombatEntity::setDestroyed(true);
 }
 
 void Enemy::draw(sf::RenderWindow * window) {

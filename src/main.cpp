@@ -9,8 +9,8 @@
 #include "Star.hpp"
 #include "Enemy.hpp"
 
-const int kStarCount = 1000;
-const int kInitialEnemyCount = 50;
+const int kStarCount = 100;
+const int kInitialEnemyCount = 25;
 
 int enemy_count;
 
@@ -59,7 +59,7 @@ int main()
 		}
 
 		float fps = 1.f / (delta_time.asSeconds() - last_time);
-		std::cout << fps << '\n';
+		//std::cout << fps << '\n';
 	}
 
 	dealloc();
@@ -102,7 +102,19 @@ void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
 
 	for (unsigned int i = 0; i < enemy.size(); i++) {
 		enemy.at(i)->update(delta_time);
+		if (enemy.at(i)->isDestroyed()) {
+            delete enemy.at(i);
+            enemy.erase(enemy.begin() + i);
+            i--;
+		}
 	}
+
+	while (enemy.size() < kInitialEnemyCount) {
+        int rand_x = rand() % kMapWidth - kWindowWidth;
+		int rand_y = rand() % kMapHeight - kWindowHeight;
+		enemy.push_back(new Enemy(rand_x, rand_y));
+	}
+	std::cout << enemy.size() << '\n';
 }
 
 void draw(sf::RenderWindow * window) {
@@ -139,7 +151,6 @@ void realTimeKeyboardListener(sf::RenderWindow * window, sf::Time * delta_time) 
         else {
             player->enforceInertia(delta_time);
         }
-
 }
 
 void eventKeyboardListener(sf::Event * event) {

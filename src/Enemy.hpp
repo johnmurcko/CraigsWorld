@@ -29,6 +29,7 @@ class Enemy : public CombatEntity {
 		void wander(sf::Time * delta_time);
 		void followPlayer(sf::Time * delta_time);
         void fireBullet();
+        void takeDamage();
 		void draw(sf::RenderWindow * window);
 		~Enemy();
 };
