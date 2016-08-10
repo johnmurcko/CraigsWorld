@@ -110,11 +110,17 @@ void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
 	}
 
 	while (enemy.size() < kInitialEnemyCount) {
-        int rand_x = rand() % kMapWidth - kWindowWidth;
-		int rand_y = rand() % kMapHeight - kWindowHeight;
-		enemy.push_back(new Enemy(rand_x, rand_y));
+        int rand_x = rand() % kSpawnRadius + kNoSpawnRadius;
+		int rand_y = rand() % kSpawnRadius + kNoSpawnRadius;
+		int x_sign = rand() % 2;
+		int y_sign = rand() % 2;
+		if (x_sign == 0) x_sign = -1; else x_sign = 1;
+		if (y_sign == 0) y_sign = -1; else y_sign = 1;
+
+		std::cout << rand_x << '\t' << rand_y << '\t' << x_sign << y_sign << '\n';
+		enemy.push_back(new Enemy(Player::getInstance()->getCenterX() + rand_x * x_sign,
+            Player::getInstance()->getCenterY() + rand_y * y_sign));
 	}
-	std::cout << enemy.size() << '\n';
 }
 
 void draw(sf::RenderWindow * window) {
