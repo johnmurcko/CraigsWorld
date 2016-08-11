@@ -51,7 +51,7 @@ void Enemy::update(sf::Time * delta_time) {
 		is_wandering = false;
 		followPlayer(delta_time);
 	}
-	else if (distanceFrom(Player::getInstance()) > 2000) {
+	else if (distanceFrom(Player::getInstance()) > kSpawnRadius) {
         CombatEntity::setDestroyed(true);
 	}
 	else {
@@ -138,6 +138,7 @@ void Enemy::draw(sf::RenderWindow * window) {
 	enemy_sprite.setTexture(enemy_texture, true);
 	enemy_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 	enemy_sprite.setPosition(getX(), getY());
+
 
 	window->draw(enemy_sprite);
 	//window->draw(target_rect);
