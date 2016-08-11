@@ -8,6 +8,7 @@
 #include "Player.hpp"
 #include "Star.hpp"
 #include "Enemy.hpp"
+#include "FarStar.hpp"
 
 const int kStarCount = 100;
 const int kInitialEnemyCount = 25;
@@ -76,10 +77,15 @@ void gameInit() {
 
 void createStars() {
     star = new Star*[kStarCount];
-	for (int i = 0; i < kStarCount; i++) {
+	for (int i = 0; i < kStarCount / 2; i++) {
 		int rand_x = rand() % kWindowWidth;
 		int rand_y = rand() % kWindowHeight;
-		star[i] = new Star(rand_x, rand_y);
+		star[i] = new FarStar(rand_x, rand_y);
+	}
+    for (int i = kStarCount / 2; i < kStarCount; i++) {
+		int rand_x = rand() % kWindowWidth;
+		int rand_y = rand() % kWindowHeight;
+		star[i] = new FarStar(rand_x, rand_y);
 	}
 }
 
