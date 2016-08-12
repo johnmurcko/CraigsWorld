@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <cmath>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include "Player.hpp"
 #include "Constants.hpp"
 #include "Trail.hpp"
@@ -76,7 +77,6 @@ float Player::getLastThrustAngle() {
 }
 
 void Player::forwardThrust(sf::Time * delta_time) {
-
     setLastThrustAngle(getAngle()+90);
 
     setXVelocity( getXVelocity() + cos(getLastThrustAngle()*kDegreesToRadians)
@@ -90,6 +90,13 @@ void Player::forwardThrust(sf::Time * delta_time) {
     if (time_last_trail.asSeconds() > 0.1f) {
         createTrail();
         clock->restart();
+    }
+
+    if (engine_sound.getStatus() != sf::Sound::Playing) {
+        engine_buffer.loadFromFile("res/shipengine.wav");
+
+        engine_sound.setBuffer(engine_buffer);
+        engine_sound.play();
     }
 }
 
@@ -105,6 +112,7 @@ void Player::reverseThrust(sf::Time * delta_time) {
 }
 
 void Player::enforceInertia(sf::Time * delta_time) {
+    engine_sound.stop();
 	setXVelocity(getXVelocity()*0.99);//delta_time->asSeconds());
 	setYVelocity(getYVelocity()*0.99);
 	origin->move(getXVelocity(), getYVelocity());
@@ -146,6 +154,10 @@ void Player::createTrail() {
 void Player::fireBullet() {
     PlayerBullet * new_bullet = new PlayerBullet(getCenterX(), getCenterY(), getAngle());
     bullet.push_back(new_bullet);
+
+    fire_buffer.loadFromFile("res/playershoot.wav");
+    fire_sound.setBuffer(fire_buffer);
+    fire_sound.play();
 }
 
 void Player::loseHealth() {

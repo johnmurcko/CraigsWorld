@@ -7,7 +7,7 @@
 class Star : public Entity {
 	public:
         Star(float x, float y);
-        void update();
+        virtual void update();
 		void draw(sf::RenderWindow * window);
 };
 

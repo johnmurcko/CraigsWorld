@@ -7,8 +7,8 @@ Trail::Trail(float x, float y) {
 	last_origin_y = origin->getY();
 	setRadius(kTrailRadius);
 	setTransparency(255);
-    setX(x);
-    setY(y);
+    setX(x - getRadius() / 2);
+    setY(y - getRadius() / 2);
 
     clock = new sf::Clock();
     is_old = false;
@@ -43,7 +43,6 @@ bool Trail::isOld() {
     return is_old;
 }
 
-
 void Trail::draw(sf::RenderWindow * window) {
 
     sf::Color trail_color(0, 255, 255, getTransparency());
@@ -54,15 +53,6 @@ void Trail::draw(sf::RenderWindow * window) {
     trail_circle.setFillColor(sf::Color::Transparent);
     trail_circle.setOrigin(getRadius() / 2, getRadius() / 2);
     trail_circle.setPosition(getX(), getY());
-/*
-	sf::Sprite trail_sprite;
-    sf::Texture trail_texture;
-    trail_texture.loadFromFile("res/placeholdercloud.png");
-    trail_sprite.setScale(2.0f,2.0f);
-    trail_sprite.setTexture(trail_texture, true);
-    trail_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
-    trail_sprite.setPosition(getX(), getY());
-*/
 
 	window->draw(trail_circle);
 }

@@ -31,7 +31,7 @@ class Entity {
 		float getCenterY();
 		int getWidth();
 		int getHeight();
-		void move(float x_delta, float y_delta);
+		virtual void move(float x_delta, float y_delta);
 		bool isIntersecting(Entity * entity);
 		float distanceFrom(Entity * entity);
 		float angleTo(Entity * entity);

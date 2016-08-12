@@ -4,6 +4,7 @@
 #include <time.h>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Constants.hpp"
 #include "Player.hpp"
 #include "Star.hpp"
@@ -80,7 +81,7 @@ void createStars() {
 	for (int i = 0; i < kStarCount / 2; i++) {
 		int rand_x = rand() % kWindowWidth;
 		int rand_y = rand() % kWindowHeight;
-		star[i] = new FarStar(rand_x, rand_y);
+		star[i] = new Star(rand_x, rand_y);
 	}
     for (int i = kStarCount / 2; i < kStarCount; i++) {
 		int rand_x = rand() % kWindowWidth;

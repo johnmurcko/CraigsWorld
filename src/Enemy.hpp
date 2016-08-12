@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include "CombatEntity.hpp"
 #include "Target.hpp"
 #include "Bullet.hpp"
@@ -20,6 +21,8 @@ class Enemy : public CombatEntity {
 		Target * target;
         sf::Clock * clock;
 		std::vector<Bullet*> bullet;
+		sf::SoundBuffer fire_buffer;
+        sf::Sound fire_sound;
 	public:
 		Enemy(float x, float y);
 		void setSpeed(float speed);

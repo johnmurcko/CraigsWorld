@@ -107,6 +107,10 @@ void Enemy::fireBullet() {
     Bullet * new_bullet = new Bullet(getCenterX(), getCenterY(),
 		angleTo(Player::getInstance()));
     bullet.push_back(new_bullet);
+
+    fire_buffer.loadFromFile("res/enemyshoot.wav");
+    fire_sound.setBuffer(fire_buffer);
+    fire_sound.play();
 }
 
 void Enemy::takeDamage() {
@@ -136,7 +140,6 @@ void Enemy::draw(sf::RenderWindow * window) {
         enemy_texture.loadFromFile("res/enemy-2.png");
 	}
 	enemy_sprite.setTexture(enemy_texture, true);
-	enemy_sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 	enemy_sprite.setPosition(getX(), getY());
 
 

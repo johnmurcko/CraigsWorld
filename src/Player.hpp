@@ -1,5 +1,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "CombatEntity.hpp"
 #include "Trail.hpp"
 #include "PlayerBullet.hpp"
@@ -23,6 +24,10 @@ class Player : public CombatEntity {
         sf::Clock * clock;
         static bool instance_exists;
         static Player * shared_player;
+        sf::SoundBuffer fire_buffer;
+        sf::Sound fire_sound;
+        sf::SoundBuffer engine_buffer;
+        sf::Sound engine_sound;
 	public:
 		Player(float x, float y);
 		static Player * getInstance();

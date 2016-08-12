@@ -10,7 +10,7 @@ Star::Star(float x, float y) {
 }
 
 void Star::draw(sf::RenderWindow * window) {
-	sf::RectangleShape starRect(sf::Vector2f(1,1));
+	sf::RectangleShape starRect(sf::Vector2f(2,2));
 	starRect.setPosition(getX(), getY());
 	starRect.setFillColor(sf::Color::White);
     window->draw(starRect);
