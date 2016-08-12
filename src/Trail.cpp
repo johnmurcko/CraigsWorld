@@ -16,12 +16,11 @@ Trail::Trail(float x, float y) {
 
 void Trail::update(sf::Time * delta_time) {
     Entity::update();
-    setRadius(getRadius() * 1.01f);
+    setRadius(getRadius() * 1.02f);
     setTransparency(getTransparency() * 0.95f);
     if (getRadius() > 60) {
         is_old = true;
     }
-
 }
 
 void Trail::setRadius (float radius) {

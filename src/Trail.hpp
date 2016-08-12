@@ -7,7 +7,7 @@
 
 class Trail : public Entity {
     private:
-        static const int kTrailRadius = 40;
+        static const int kTrailRadius = 20;
         float radius;
         float transparency;
         bool is_old;

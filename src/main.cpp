@@ -11,7 +11,7 @@
 #include "FarStar.hpp"
 
 const int kStarCount = 100;
-const int kInitialEnemyCount = 25;
+const int kInitialEnemyCount = 200;
 
 int enemy_count;
 
@@ -137,7 +137,9 @@ void draw(sf::RenderWindow * window) {
 	}
 
     for (unsigned int i = 0; i < enemy.size(); i++) {
-        enemy.at(i)->draw(window);
+        if (enemy.at(i)->distanceFrom(Player::getInstance()) < 1080) {
+            enemy.at(i)->draw(window);
+        }
     }
 
 	player->draw(window);

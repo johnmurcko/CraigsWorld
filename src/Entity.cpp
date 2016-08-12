@@ -83,6 +83,17 @@ float Entity::angleTo(Entity * entity) {
 	return atan2((entity->getCenterY() - getCenterY()), (entity->getCenterX() - getCenterX())) * kRadiansToDegrees + 90;
 }
 
+ // TODO: need to get this working
+bool Entity::isInView() {
+    if ((getX() + getWidth() > 0 || getX() < kWindowWidth)
+        && (getY() + getHeight() > 0 || getY() < kWindowHeight)) {
+
+        return true;
+    }
+
+    return false;
+}
+
 void Entity::update() {
 	setX(getX() + origin->getX() - last_origin_x);
 	setY(getY() + origin->getY() - last_origin_y);

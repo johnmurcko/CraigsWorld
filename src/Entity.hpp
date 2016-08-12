@@ -35,6 +35,7 @@ class Entity {
 		bool isIntersecting(Entity * entity);
 		float distanceFrom(Entity * entity);
 		float angleTo(Entity * entity);
+		bool isInView();
 		void update();
 		virtual void update(sf::Time * delta_time) {};
 		virtual void draw(sf::RenderWindow * window) {};
