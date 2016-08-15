@@ -34,12 +34,10 @@ class Player : public CombatEntity {
 		void setSpeed(float speed);
 		void setAcceleration(float acceleration);
 		void setMaxSpeed(float max_speed);
-		void setAngle(float angle);
 		void setLastThrustAngle(float last_thrust_angle);
 		float getSpeed();
 		float getAcceleration();
 		float getMaxSpeed();
-		float getAngle();
 		float getLastThrustAngle();
 		void forwardThrust(sf::Time * delta_time);
 		void reverseThrust(sf::Time * delta_time);

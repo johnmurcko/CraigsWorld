@@ -18,12 +18,21 @@ void Entity::setHeight(int height) {
 	this->height = height;
 }
 
+void Entity::setVelocity(float x_velocity, float y_velocity) {
+    setXVelocity(x_velocity);
+    setYVelocity(y_velocity);
+}
+
 void Entity::setXVelocity(float x_velocity) {
     this->x_velocity = x_velocity;
 }
 
 void Entity::setYVelocity(float y_velocity) {
     this->y_velocity = y_velocity;
+}
+
+void Entity::setAngle(float angle) {
+    this->angle = angle;
 }
 
 float Entity::getXVelocity() {
@@ -58,6 +67,10 @@ int Entity::getHeight() {
 	return height;
 }
 
+float Entity::getAngle() {
+	return angle;
+}
+
 void Entity::move(float x_delta, float y_delta) {
     setX(getX() + x_delta);
     setY(getY() + y_delta);
@@ -76,11 +89,13 @@ bool Entity::isIntersecting(Entity * entity) {
 }
 
 float Entity::distanceFrom(Entity * entity) {
-    return sqrt(pow(getX() - entity->getX(), 2) + pow(getY() - entity->getY(), 2));
+    return sqrt(pow(getX() - entity->getX(), 2) + pow(getY()
+		- entity->getY(), 2));
 }
 
 float Entity::angleTo(Entity * entity) {
-	return atan2((entity->getCenterY() - getCenterY()), (entity->getCenterX() - getCenterX())) * kRadiansToDegrees + 90;
+	return atan2((entity->getCenterY() - getCenterY()),
+		(entity->getCenterX() - getCenterX())) * kRadiansToDegrees + 90;
 }
 
  // TODO: need to get this working

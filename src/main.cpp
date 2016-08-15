@@ -10,6 +10,9 @@
 #include "Star.hpp"
 #include "Enemy.hpp"
 #include "FarStar.hpp"
+#include "EnemyUFO.hpp"
+#include "EnemySquid.hpp"
+#include "Astroid.hpp"
 
 const int kStarCount = 100;
 const int kInitialEnemyCount = 200;
@@ -33,7 +36,8 @@ std::vector<CombatEntity*> enemy;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(kWindowWidth, kWindowHeight), "Craig's World");
+	sf::RenderWindow window(sf::VideoMode(kWindowWidth, kWindowHeight),
+		"Craig's World");
 
 	window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(60);
@@ -91,10 +95,15 @@ void createStars() {
 }
 
 void createEnemies() {
-	for (int i = 0; i < kInitialEnemyCount; i++) {
+	for (int i = 0; i < kInitialEnemyCount / 2; i++) {
 		int rand_x = rand() % kMapWidth - kWindowWidth;
 		int rand_y = rand() % kMapHeight - kWindowHeight;
-		enemy.push_back(new Enemy(rand_x, rand_y));
+		enemy.push_back(new EnemySquid(rand_x, rand_y));
+	}
+	for (int i = kInitialEnemyCount / 2; i < kInitialEnemyCount; i++) {
+		int rand_x = rand() % kMapWidth - kWindowWidth;
+		int rand_y = rand() % kMapHeight - kWindowHeight;
+		enemy.push_back(new EnemyUFO(rand_x, rand_y));
 	}
 }
 
@@ -125,8 +134,8 @@ void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
 		if (y_sign == 0) y_sign = -1; else y_sign = 1;
 
 		std::cout << rand_x << '\t' << rand_y << '\t' << x_sign << y_sign << '\n';
-		enemy.push_back(new Enemy(Player::getInstance()->getCenterX() + rand_x * x_sign,
-            Player::getInstance()->getCenterY() + rand_y * y_sign));
+		enemy.push_back(new EnemyUFO(Player::getInstance()->getCenterX() + rand_x
+			* x_sign, Player::getInstance()->getCenterY() + rand_y * y_sign));
 	}
 }
 

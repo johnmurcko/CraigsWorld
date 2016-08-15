@@ -20,37 +20,8 @@ void Bullet::setSpeed(float speed) {
 	this->speed = speed;
 }
 
-void Bullet::setAngle(float angle) {
-	this->angle = angle;
-}
-
-void Bullet::setVelocity(float x_velocity, float y_velocity) {
-    setXVelocity(x_velocity);
-    setYVelocity(y_velocity);
-}
-
-void Bullet::setXVelocity(float x_velocity) {
-    this->x_velocity = x_velocity;
-}
-
-void Bullet::setYVelocity(float y_velocity) {
-    this->y_velocity = y_velocity;
-}
-
 float Bullet::getSpeed() {
 	return speed;
-}
-
-float Bullet::getAngle() {
-	return angle;
-}
-
-float Bullet::getXVelocity() {
-    return x_velocity;
-}
-
-float Bullet::getYVelocity() {
-    return y_velocity;
 }
 
 bool Bullet::isDestroyed() {

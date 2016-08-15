@@ -31,7 +31,8 @@ Player * Player::getInstance() {
     }
 
     instance_exists = true;
-    shared_player = new Player(kWindowWidth / 2 + kWidth / 2, kWindowHeight / 2 + kHeight / 2);
+    shared_player = new Player(kWindowWidth / 2 + kWidth / 2,
+		kWindowHeight / 2 + kHeight / 2);
 
     return shared_player;
 }
@@ -48,10 +49,6 @@ void Player::setMaxSpeed(float max_speed) {
 	this->max_speed = max_speed;
 }
 
-void Player::setAngle(float angle) {
-	this->angle = angle;
-}
-
 void Player::setLastThrustAngle(float last_thrust_angle) {
     this->last_thrust_angle = last_thrust_angle;
 }
@@ -66,10 +63,6 @@ float Player::getAcceleration() {
 
 float Player::getMaxSpeed() {
 	return max_speed;
-}
-
-float Player::getAngle() {
-	return angle;
 }
 
 float Player::getLastThrustAngle() {

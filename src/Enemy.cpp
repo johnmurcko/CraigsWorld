@@ -62,7 +62,9 @@ void Enemy::update(sf::Time * delta_time) {
 	player.push_back(Player::getInstance());
 	for (unsigned int i = 0; i < bullet.size(); i++) {
         bullet.at(i)->update(&player, delta_time);
-        if (distanceFrom(bullet.at(i)) > 1000 || bullet.at(i)->isDestroyed()) {
+        if (distanceFrom(bullet.at(i)) > 1000 
+			|| bullet.at(i)->isDestroyed()) {
+
             delete bullet.at(i);
             bullet.erase(bullet.begin() + i);
             i--;
@@ -84,8 +86,10 @@ void Enemy::wander(sf::Time * delta_time) {
 
 void Enemy::followPlayer (sf::Time * delta_time) {
 
-    setXVelocity(cos(angleTo(Player::getInstance())*kDegreesToRadians) * getSpeed());
-    setYVelocity(sin(angleTo(Player::getInstance())*kDegreesToRadians) * getSpeed());
+    setXVelocity(cos(angleTo(Player::getInstance())*kDegreesToRadians)
+		* getSpeed());
+    setYVelocity(sin(angleTo(Player::getInstance())*kDegreesToRadians)
+		* getSpeed());
 
 	move(getXVelocity(), getYVelocity());
 
@@ -115,36 +119,6 @@ void Enemy::fireBullet() {
 
 void Enemy::takeDamage() {
     CombatEntity::setDestroyed(true);
-}
-
-void Enemy::draw(sf::RenderWindow * window) {
-    for (unsigned int i = 0; i < bullet.size(); i++) {
-        bullet.at(i)->draw(window);
-	}
-
-	sf::RectangleShape enemy_rect(sf::Vector2f(10,10));
-	enemy_rect.setPosition(getX(), getY());
-	enemy_rect.setFillColor(sf::Color::Red);
-	sf::RectangleShape target_rect(sf::Vector2f(50, 50));
-	target_rect.setPosition(target->getX(), target->getY());
-	target_rect.setFillColor(sf::Color::Green);
-	//window->draw(enemy_rect);
-
-	sf::Sprite enemy_sprite;
-	sf::Texture enemy_texture;
-	if (enemy_type == basic_enemy_one) {
-        enemy_texture.loadFromFile("res/enemy-1.png");
-
-	}
-	else if (enemy_type == basic_enemy_two) {
-        enemy_texture.loadFromFile("res/enemy-2.png");
-	}
-	enemy_sprite.setTexture(enemy_texture, true);
-	enemy_sprite.setPosition(getX(), getY());
-
-
-	window->draw(enemy_sprite);
-	//window->draw(target_rect);
 }
 
 Enemy::~Enemy() {

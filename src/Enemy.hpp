@@ -9,9 +9,9 @@
 #include "Bullet.hpp"
 
 class Enemy : public CombatEntity {
-	private:
-        static const int kTargetWidth = 70;
-		static const int kTargetHeight = 108;
+	protected:
+        static const int kTargetWidth = 50;
+		static const int kTargetHeight = 50;
 		static const int kTargetRange = 1000;
 		static const int basic_enemy_one = 0;
 		static const int basic_enemy_two = 1;
@@ -33,7 +33,7 @@ class Enemy : public CombatEntity {
 		void followPlayer(sf::Time * delta_time);
         void fireBullet();
         void takeDamage();
-		void draw(sf::RenderWindow * window);
+		virtual void draw(sf::RenderWindow * window) {};
 		~Enemy();
 };
 

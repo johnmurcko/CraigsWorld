@@ -1,0 +1,10 @@
+#include "EnemySquid.hpp"
+
+EnemySquid::EnemySquid(float x, float y) : Enemy(x, y) {
+	setWidth(kWidth);
+	setHeight(kHeight);
+}
+
+void EnemySquid::draw(sf::RenderWindow * window) {
+
+}
