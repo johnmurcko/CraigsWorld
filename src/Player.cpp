@@ -8,6 +8,7 @@
 #include "PlayerBullet.hpp"
 #include "Enemy.hpp"
 #include <iostream>
+#include "GridManager.hpp"
 
 bool Player::instance_exists = false;
 Player * Player::shared_player = NULL;
@@ -23,6 +24,7 @@ Player::Player(float x, float y) {
 	setMaxSpeed(kDefaultMaxSpeed);
 	setAngle(0);
 	clock = new sf::Clock();
+	GridManager::getInstance()->assignEntityToCells(this);
 }
 
 Player * Player::getInstance() {

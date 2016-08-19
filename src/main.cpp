@@ -13,6 +13,7 @@
 #include "EnemyUFO.hpp"
 #include "EnemySquid.hpp"
 #include "Astroid.hpp"
+#include "GridManager.hpp"
 
 const int kStarCount = 100;
 const int kInitialEnemyCount = 200;
@@ -33,6 +34,7 @@ Player * player;
 Origin * origin;
 Star ** star;
 std::vector<CombatEntity*> enemy;
+GridManager * grid_manager;
 
 int main()
 {
@@ -78,6 +80,7 @@ void gameInit() {
 	player = Player::getInstance();
 	createStars();
 	createEnemies();
+	grid_manager = GridManager::getInstance();
 }
 
 void createStars() {
@@ -110,6 +113,7 @@ void createEnemies() {
 void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
     realTimeKeyboardListener(window, delta_time);
 
+
     player->update(&enemy, delta_time);
 
 	for (int i = 0; i < kStarCount; i++) {
@@ -124,7 +128,7 @@ void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
             i--;
 		}
 	}
-
+	grid_manager->updateGrids();
 	while (enemy.size() < kInitialEnemyCount) {
         int rand_x = rand() % kSpawnRadius + kNoSpawnRadius;
 		int rand_y = rand() % kSpawnRadius + kNoSpawnRadius;
@@ -141,6 +145,8 @@ void gameUpdate(sf::RenderWindow * window, sf::Time * delta_time) {
 
 void draw(sf::RenderWindow * window) {
 	window->clear(sf::Color::Black);
+
+	grid_manager->draw(window);
 
 	for (int i = 0; i < kStarCount; i++) {
 		star[i]->draw(window);
@@ -187,7 +193,6 @@ void eventKeyboardListener(sf::Event * event) {
 
 void dealloc() {
     delete player;
-    delete origin;
     for (int i = 0; i < kStarCount; i++) {
         delete star[i];
     }

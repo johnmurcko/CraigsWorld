@@ -4,6 +4,7 @@
 #include "Enemy.hpp"
 #include "Constants.hpp"
 #include "Player.hpp"
+#include "GridManager.hpp"
 
 Enemy::Enemy(float x, float y) {
 	origin = Origin::getInstance();
@@ -18,6 +19,7 @@ Enemy::Enemy(float x, float y) {
 	setDestroyed(false);
     clock = new sf::Clock();
 	generateWanderTarget();
+	GridManager::getInstance()->assignEntityToCells(this);
 }
 
 void Enemy::setSpeed(float speed) {
