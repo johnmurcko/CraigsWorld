@@ -4,6 +4,7 @@
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "Origin.hpp"
+#include <string>
 
 class Entity {
 	protected:
@@ -17,6 +18,7 @@ class Entity {
 		float y_velocity;
 		float angle;
 		Origin * origin;
+		std::string type;
 	public:
 		void setX(float x);
 		void setY(float y);
@@ -26,6 +28,7 @@ class Entity {
 		void setXVelocity(float x_velocity);
 		void setYVelocity(float y_velocity);
 		void setAngle(float angle);
+		void setType(std::string type);
 		float getX();
 		float getY();
 		float getCenterX();
@@ -35,6 +38,7 @@ class Entity {
 		float getXVelocity();
 		float getYVelocity();
 		float getAngle();
+		std::string getType();
 		virtual void move(float x_delta, float y_delta);
 		bool isIntersecting(Entity * entity);
 		float distanceFrom(Entity * entity);

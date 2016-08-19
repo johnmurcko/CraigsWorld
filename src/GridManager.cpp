@@ -1,7 +1,6 @@
 #include "GridManager.hpp"
 
 GridManager::GridManager() {
-	cell = new GridCell**[kHorizontalCellCount][kVerticalCellCount];
 	for (int i = 0; i < kHorizontalCellCount; i++) {
 		for (int j = 0; j < kVerticalCellCount; j++) {
 			cell[i][j] = new GridCell(i * kCellWidth, j * kCellHeight,
@@ -31,4 +30,20 @@ GridManager * GridManager::getInstance() {
     shared_grid_manager = new GridManager();
 
     return shared_grid_manager;
+}
+
+void GridManager::updateGrids() {
+	for (int i = 0; i < kHorizontalCellCount; i++) {
+		for (int j = 0; j < kVerticalCellCount; j++) {
+			cell[i][j]->update();
+		}
+	}
+}
+
+void GridManager::draw(sf::RenderWindow * window) {
+	for (int i = 0; i < kHorizontalCellCount; i++) {
+		for (int j = 0; j < kVerticalCellCount; j++) {
+			cell[i][j]->draw(window);
+		}
+	}
 }

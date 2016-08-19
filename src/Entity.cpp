@@ -35,6 +35,10 @@ void Entity::setAngle(float angle) {
     this->angle = angle;
 }
 
+void Entity::setType(std::string type) {
+	this->type = type;
+}
+
 float Entity::getXVelocity() {
     return x_velocity;
 }
@@ -69,6 +73,10 @@ int Entity::getHeight() {
 
 float Entity::getAngle() {
 	return angle;
+}
+
+std::string Entity::getType() {
+	return type;
 }
 
 void Entity::move(float x_delta, float y_delta) {
