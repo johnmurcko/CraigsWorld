@@ -76,11 +76,11 @@ int main()
 }
 
 void gameInit() {
+	grid_manager = GridManager::getInstance();
 	origin = Origin::getInstance();
 	player = Player::getInstance();
 	createStars();
 	createEnemies();
-	grid_manager = GridManager::getInstance();
 }
 
 void createStars() {

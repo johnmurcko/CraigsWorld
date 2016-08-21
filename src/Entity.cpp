@@ -106,6 +106,10 @@ float Entity::angleTo(Entity * entity) {
 		(entity->getCenterX() - getCenterX())) * kRadiansToDegrees + 90;
 }
 
+void Entity::addCell(GridCell * new_cell) {
+	cell.push_back(new_cell);
+}
+
  // TODO: need to get this working
 bool Entity::isInView() {
     if ((getX() + getWidth() > 0 || getX() < kWindowWidth)

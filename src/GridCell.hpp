@@ -13,7 +13,7 @@ class GridCell {
 		GridCell * cell_left;
 		GridCell * cell_up;
 		GridCell * cell_down;
-		std::vector<Entity*> * cell_entity;
+		std::vector<Entity*> cell_entity;
 	public:
 		GridCell(float x, float y, int width, int height);
 		void setCellRight(GridCell * cell_right);

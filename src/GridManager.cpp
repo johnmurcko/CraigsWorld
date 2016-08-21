@@ -55,7 +55,9 @@ void GridManager::assignEntityToCells(Entity * entity) {
 		for (int j = 0; j < kVerticalCellCount; j++) {
 			if (cell[i][j]->containsEntity(entity)) {
 				cell[i][j]->addEntity(entity);
+				entity->addCell(cell[i][j]);
 			}
 		}
 	}
 }
+

@@ -4,6 +4,7 @@
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "Origin.hpp"
+#include "GridCell.hpp"
 #include <string>
 
 class Entity {
@@ -18,6 +19,7 @@ class Entity {
 		float y_velocity;
 		float angle;
 		Origin * origin;
+		std::vector<GridCell*> cell;
 		std::string type;
 	public:
 		void setX(float x);
@@ -43,6 +45,7 @@ class Entity {
 		bool isIntersecting(Entity * entity);
 		float distanceFrom(Entity * entity);
 		float angleTo(Entity * entity);
+		void addCell(GridCell * new_cell);
 		bool isInView();
 		void update();
 		virtual void update(sf::Time * delta_time) {};
